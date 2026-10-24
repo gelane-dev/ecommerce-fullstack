@@ -1,0 +1,151 @@
+.header {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+
+    align-items: center;
+
+    width: 100%;
+    height: 76px;
+
+    padding: 0 40px;
+
+    border-bottom: 1px solid #0B0B0B;
+
+    background-color: #FFFFFF;
+    color: #0B0B0B;
+
+    gap: 16px;
+}
+
+/* =========================
+   NAVEGAÇÃO ESQUERDA
+========================= */
+
+.header-esquerda {
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+
+    font-family: "Archivo", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.header-esquerda a {
+    color: #0B0B0B;
+
+    text-decoration: none;
+
+    transition: opacity 0.2s ease;
+}
+
+.header-esquerda a:hover {
+    opacity: 0.6;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.header-logo {
+    display: block;
+}
+
+.header-logo img {
+    display: block;
+
+    width: auto;
+    height: 48px;
+}
+
+
+/* =========================
+   NAVEGAÇÃO DIREITA
+========================= */
+
+.header-direita {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 28px;
+
+    font-family: "Archivo", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.header-direita a {
+    color: #0B0B0B;
+
+    text-decoration: none;
+
+    transition: opacity 0.2s ease;
+}
+
+.header-direita a:hover {
+    opacity: 0.6;
+}
+
+
+/* =========================
+   ACESSIBILIDADE
+========================= */
+
+.header a:focus-visible {
+    outline: 2px solid #0B0B0B;
+    outline-offset: 4px;
+}
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 900px) {
+    .header {
+        padding: 0 24px;
+    }
+
+    .header-esquerda,
+    .header-direita {
+        gap: 16px;
+        font-size: 9px;
+    }
+
+    .header-logo img {
+        height: 40px;
+    }
+}
+
+@media (max-width: 700px) {
+    .header {
+        height: auto;
+        min-height: 76px;
+
+        grid-template-columns: 1fr auto;
+        padding: 16px 20px;
+    }
+
+    .header-esquerda {
+        display: none;
+    }
+
+    .header-direita {
+        gap: 16px;
+    }
+
+    .header-logo img {
+        height: 36px;
+    }
+}
