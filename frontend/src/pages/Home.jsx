@@ -13,6 +13,10 @@ export const Home = () => {
     }, [])
     
     return (
-         <ProdutoCard produtos={produtos} />
+        <main className="card-container">
+            {produtos.map((produto) => (
+                <ProdutoCard key={produto.id} produto={produto} />
+            ))}
+        </main>
     )
 }
