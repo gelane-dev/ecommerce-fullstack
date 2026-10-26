@@ -2,6 +2,9 @@ import "./App.css";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/autenticacao/Login";
 import { Cadastro } from "./pages/autenticacao/Cadastro";
+import { Carrinho } from "./pages/carrinho/Carrinho";
+import { MeusPedidos } from "./pages/pedidos/MeusPedidos";
+import { ProvedorCarrinho } from "./context/CartContext";
 import { Header } from "./components/header/Header";
 import { ProvedorAutenticacao } from "./context/AuthContext";
 
@@ -35,6 +38,16 @@ function Layout() {
                 />
 
                 <Route
+                    path="/carrinho"
+                    element={<Carrinho />}
+                />
+
+                <Route
+                    path="/pedidos"
+                    element={<MeusPedidos />}
+                />
+
+                <Route
                     path="/"
                     element={<Home />}
                 />
@@ -47,7 +60,9 @@ function App() {
     return (
         <BrowserRouter>
             <ProvedorAutenticacao>
-                <Layout />
+                <ProvedorCarrinho>
+                    <Layout />
+                </ProvedorCarrinho>
             </ProvedorAutenticacao>
         </BrowserRouter>
     );

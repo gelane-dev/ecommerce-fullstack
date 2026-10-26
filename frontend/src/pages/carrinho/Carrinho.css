@@ -1,0 +1,160 @@
+.carrinho {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px;
+
+    color: #0B0B0B;
+    font-family: "Archivo", sans-serif;
+}
+
+.carrinho h1 {
+    margin: 0 0 32px;
+
+    font-size: 28px;
+    letter-spacing: 0.16em;
+}
+
+.carrinho-vazio {
+    margin-bottom: 24px;
+}
+
+.carrinho-voltar {
+    color: #0B0B0B;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+}
+
+.carrinho-lista {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.carrinho-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto auto;
+    align-items: center;
+    gap: 20px;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.carrinho-imagem {
+    width: 80px;
+    height: 80px;
+
+    object-fit: cover;
+}
+
+.carrinho-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.carrinho-nome {
+    font-size: 14px;
+}
+
+.carrinho-preco {
+    font-size: 12px;
+    color: #666666;
+}
+
+.carrinho-quantidade {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.carrinho-quantidade button {
+    width: 28px;
+    height: 28px;
+
+    border: 1px solid #0B0B0B;
+    background: none;
+    cursor: pointer;
+}
+
+.carrinho-quantidade button:hover {
+    background-color: #0B0B0B;
+    color: #FFFFFF;
+}
+
+.carrinho-subtotal {
+    min-width: 90px;
+
+    font-weight: 700;
+    text-align: right;
+}
+
+.carrinho-excluir {
+    padding: 0;
+
+    border: none;
+    background: none;
+    color: #B00020;
+    cursor: pointer;
+
+    font-size: 11px;
+    letter-spacing: 0.16em;
+}
+
+.carrinho-resumo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+
+    margin-top: 32px;
+}
+
+.carrinho-total {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+
+    font-size: 12px;
+    letter-spacing: 0.16em;
+}
+
+.carrinho-total strong {
+    font-size: 24px;
+}
+
+.carrinho-finalizar {
+    padding: 16px 32px;
+
+    border: none;
+    background-color: #0B0B0B;
+    color: #FFFFFF;
+    cursor: pointer;
+
+    font-size: 12px;
+    letter-spacing: 0.16em;
+}
+
+.carrinho-finalizar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.carrinho-mensagem {
+    margin: 0;
+
+    color: #B00020;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    .carrinho-item {
+        grid-template-columns: 64px 1fr;
+    }
+
+    .carrinho-subtotal {
+        text-align: left;
+    }
+}
