@@ -54,6 +54,33 @@ def criar_pedido(db: Session, usuario_id: int, dados: CriarPedido) -> dict:
     }
 
 
+def listar_pedidos_do_usuario(db: Session, usuario_id: int) -> list[dict]:
+    pedidos = (
+        db.query(Pedido)
+        .filter(Pedido.usuario_id == usuario_id)
+        .order_by(Pedido.data_criacao.desc())
+        .all()
+    )
+    return [
+        {
+            "id": pedido.id,
+            "total": pedido.total,
+            "status": pedido.status,
+            "data_criacao": pedido.data_criacao,
+            "itens": [
+                {
+                    "produto_id": item.produto_id,
+                    "nome": item.produto.name,
+                    "quantidade": item.quantidade,
+                    "preco_unitario": item.preco_unitario,
+                }
+                for item in pedido.itens
+            ],
+        }
+        for pedido in pedidos
+    ]
+
+
 def mudar_status(db: Session, pedido_id: int, novo_status: StatusPedido) -> dict:
     pedido_db = db.query(Pedido).filter(Pedido.id == pedido_id).first()
     if pedido_db is None:

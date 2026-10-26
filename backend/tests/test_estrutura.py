@@ -34,7 +34,15 @@ def test_modelos_preservam_tabelas_e_colunas():
         for nome, tabela in Base.metadata.tables.items()
     }
     assert colunas == {
-        "produto": {"id", "name", "categoria", "preco", "estoque", "data_criacao"},
+        "produto": {
+            "id",
+            "name",
+            "categoria",
+            "preco",
+            "estoque",
+            "imagem_url",
+            "data_criacao",
+        },
         "usuarios": {"id", "role", "name", "email", "senha", "data_criacao"},
         "pedidos": {"id", "usuario_id", "total", "status", "data_criacao"},
         "itens_pedidos": {
@@ -62,6 +70,8 @@ def test_openapi_mantem_tags_e_caminhos():
         "/cadastro/",
         "/produtos/",
         "/produtos/{id}",
+        "/produtos/{id}/imagem",
         "/pedidos/",
+        "/pedidos/meus",
         "/pedidos/{id}/status",
     }
