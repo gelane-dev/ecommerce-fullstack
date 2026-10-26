@@ -2,9 +2,11 @@ import "./Header.css";
 import { Link } from "react-router-dom";
 import logoWhitePony from "../../assets/login-arte.png";
 import { usarAutenticacao } from "../../hooks/usarAutenticacao";
+import { usarCarrinho } from "../../hooks/usarCarrinho";
 
 export const Header = () => {
     const { usuario, estaAutenticado, sair } = usarAutenticacao();
+    const { quantidadeTotal } = usarCarrinho();
 
     return (
         <header className="header">
@@ -45,6 +47,10 @@ export const Header = () => {
                             Olá, {usuario.nome}
                         </span>
 
+                        <Link to="/pedidos">
+                            PEDIDOS
+                        </Link>
+
                         <button
                             type="button"
                             className="header-sair"
@@ -60,7 +66,7 @@ export const Header = () => {
                 )}
 
                 <Link to="/carrinho">
-                    SACOLA
+                    SACOLA ({quantidadeTotal})
                 </Link>
             </nav>
 

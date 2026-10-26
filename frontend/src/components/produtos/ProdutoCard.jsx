@@ -1,7 +1,10 @@
 import { BotaoFavorito } from '../botoes/BotaoFavorito'
+import { usarCarrinho } from '../../hooks/usarCarrinho'
 import './ProdutoCard.css'
 
 export function ProdutoCard({ produto }) {
+    const { adicionarAoCarrinho } = usarCarrinho()
+
     if (!produto) return null
 
     return (
@@ -14,6 +17,13 @@ export function ProdutoCard({ produto }) {
             <div className="card-conteudo">
                 <h2 className="card-titulo">{produto.name}</h2>
                 <p className="card-preco">R$ {produto.preco}</p>
+                <button
+                    type="button"
+                    className="card-botao-sacola"
+                    onClick={() => adicionarAoCarrinho(produto)}
+                >
+                    Adicionar à Sacola
+                </button>
             </div>
             <div className="card-favorito-posicionador">
                 <BotaoFavorito />

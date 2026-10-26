@@ -59,6 +59,23 @@
   color: #2e7d32;
 }
 
+.card-botao-sacola {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: none;
+  background-color: #0B0B0B;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+}
+
+.card-botao-sacola:hover {
+  opacity: 0.8;
+}
+
 .card-favorito-posicionador {
   position: absolute;
   top: 10px;
