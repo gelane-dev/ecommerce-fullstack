@@ -27,7 +27,15 @@ def login(credenciais: Login, db: Session = Depends(get_db)):
                 "id": usuario_login.id,
             }
         )
-        return {"access_token": token, "token_type": "bearer"}
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "usuario": {
+                "id": usuario_login.id,
+                "nome": usuario_login.name,
+                "email": usuario_login.email,
+            },
+        }
     except HTTPException:
         raise
     except OperationalError:
