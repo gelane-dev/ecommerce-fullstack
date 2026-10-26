@@ -8,8 +8,9 @@ export const Home = () => {
         fetch("http://localhost:8001/produtos/")
             .then(resposta => resposta.json())
             .then(dados => {
-                setProdutos(dados)
+                setProdutos(Array.isArray(dados) ? dados : [])
             })
+            .catch(() => setProdutos([]))
     }, [])
     
     return (
