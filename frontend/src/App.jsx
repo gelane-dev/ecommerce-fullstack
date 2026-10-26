@@ -1,7 +1,9 @@
 import "./App.css";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/autenticacao/Login";
+import { Cadastro } from "./pages/autenticacao/Cadastro";
 import { Header } from "./components/header/Header";
+import { ProvedorAutenticacao } from "./context/AuthContext";
 
 import {
     BrowserRouter,
@@ -13,7 +15,9 @@ import {
 function Layout() {
     const location = useLocation();
 
-    const estaNoLogin = location.pathname === "/login";
+    const estaNoLogin =
+        location.pathname === "/login" ||
+        location.pathname === "/cadastro";
 
     return (
         <>
@@ -23,6 +27,11 @@ function Layout() {
                 <Route
                     path="/login"
                     element={<Login />}
+                />
+
+                <Route
+                    path="/cadastro"
+                    element={<Cadastro />}
                 />
 
                 <Route
@@ -37,7 +46,9 @@ function Layout() {
 function App() {
     return (
         <BrowserRouter>
-            <Layout />
+            <ProvedorAutenticacao>
+                <Layout />
+            </ProvedorAutenticacao>
         </BrowserRouter>
     );
 }

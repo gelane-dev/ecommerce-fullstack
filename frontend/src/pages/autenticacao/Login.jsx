@@ -1,10 +1,12 @@
 import { useState } from "react";
 import "./Login.css";
 import imagemLogin from "../../assets/login-arte.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { usarAutenticacao } from "../../hooks/usarAutenticacao";
 
 export const Login = () => {
     const navigate = useNavigate();
+    const { entrar } = usarAutenticacao();
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -43,9 +45,9 @@ export const Login = () => {
             const dados = await resposta.json();
 
             if (resposta.ok) {
-                localStorage.setItem(
-                    "token",
-                    dados.access_token
+                entrar(
+                    dados.access_token,
+                    dados.usuario || { nome: email, email }
                 );
 
                 navigate("/");
@@ -182,6 +184,13 @@ export const Login = () => {
                         >
                             ESQUECI MINHA SENHA
                         </a>
+
+                        <Link
+                            to="/cadastro"
+                            className="login-esqueci"
+                        >
+                            CRIAR CONTA
+                        </Link>
 
                         {mensagem && (
                             <p className="login-mensagem">
