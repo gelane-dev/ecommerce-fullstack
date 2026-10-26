@@ -98,6 +98,26 @@
 }
 
 
+.header-sair {
+    padding: 0;
+
+    border: none;
+    background: none;
+    color: #0B0B0B;
+    cursor: pointer;
+
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+
+    transition: opacity 0.2s ease;
+}
+
+.header-sair:hover {
+    opacity: 0.6;
+}
+
+
 /* =========================
    ACESSIBILIDADE
 ========================= */

@@ -1,8 +1,11 @@
 import "./Header.css";
 import { Link } from "react-router-dom";
 import logoWhitePony from "../../assets/login-arte.png";
+import { usarAutenticacao } from "../../hooks/usarAutenticacao";
 
 export const Header = () => {
+    const { usuario, estaAutenticado, sair } = usarAutenticacao();
+
     return (
         <header className="header">
 
@@ -36,9 +39,25 @@ export const Header = () => {
                     BUSCAR
                 </Link>
 
-                <Link to="/login">
-                    CONTA
-                </Link>
+                {estaAutenticado ? (
+                    <>
+                        <span className="header-usuario">
+                            Olá, {usuario.nome}
+                        </span>
+
+                        <button
+                            type="button"
+                            className="header-sair"
+                            onClick={sair}
+                        >
+                            SAIR
+                        </button>
+                    </>
+                ) : (
+                    <Link to="/login">
+                        LOGIN
+                    </Link>
+                )}
 
                 <Link to="/carrinho">
                     SACOLA
