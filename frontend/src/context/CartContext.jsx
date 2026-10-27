@@ -13,7 +13,7 @@ function carregarCarrinho() {
         const salvo = localStorage.getItem(CHAVE_CARRINHO);
 
         return salvo ? JSON.parse(salvo) : [];
-    } catch (erro) {
+    } catch {
         return [];
     }
 }
