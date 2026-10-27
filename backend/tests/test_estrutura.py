@@ -64,7 +64,7 @@ def test_openapi_mantem_tags_e_caminhos():
         if isinstance(operation, dict)
         for tag in operation.get("tags", [])
     }
-    assert tags == {"Autenticação", "Produtos", "Pedidos"}
+    assert tags == {"Autenticação", "Produtos", "Pedidos", "Usuários"}
     assert set(schema["paths"]) == {
         "/login/",
         "/cadastro/",
@@ -75,4 +75,6 @@ def test_openapi_mantem_tags_e_caminhos():
         "/pedidos/",
         "/pedidos/meus",
         "/pedidos/{id}/status",
+        "/usuarios/me",
+        "/usuarios/me/senha",
     }
