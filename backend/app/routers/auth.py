@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
 
@@ -13,7 +14,12 @@ router = APIRouter(tags=["Autenticação"])
 @router.post("/login/")
 def login(credenciais: Login, db: Session = Depends(get_db)):
     try:
-        usuario_login = db.query(Usuario).filter(Usuario.email == credenciais.email).first()
+        # credenciais.email já vem normalizado; lower() na coluna cobre linhas antigas gravadas com maiúscula
+        usuario_login = (
+            db.query(Usuario)
+            .filter(func.lower(Usuario.email) == credenciais.email)
+            .first()
+        )
 
         if usuario_login is None or not verificar_senha(
             credenciais.senha, usuario_login.senha
@@ -49,6 +55,10 @@ def login(credenciais: Login, db: Session = Depends(get_db)):
 @router.post("/cadastro/", status_code=201)
 def criar_usuario(usuarios: CriarUsuario, db: Session = Depends(get_db)):
     try:
+        # o unique da coluna distingue caixa; a checagem com lower() cobre linhas antigas em maiúscula
+        if db.query(Usuario).filter(func.lower(Usuario.email) == usuarios.email).first():
+            raise HTTPException(status_code=409, detail="E-mail já cadastrado")
+
         cadastrar = Usuario(
             name=usuarios.name,
             email=usuarios.email,
