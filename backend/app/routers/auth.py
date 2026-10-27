@@ -34,6 +34,7 @@ def login(credenciais: Login, db: Session = Depends(get_db)):
                 "id": usuario_login.id,
                 "nome": usuario_login.name,
                 "email": usuario_login.email,
+                "tipo": usuario_login.role,
             },
         }
     except HTTPException:

@@ -8,6 +8,7 @@ from app.schemas import AtualizarStatus, CriarPedido
 from app.services.pedido_service import (
     criar_pedido,
     listar_pedidos_do_usuario,
+    listar_todos_pedidos,
     mudar_status,
 )
 
@@ -28,6 +29,18 @@ def criar_pedido_endpoint(
     except OperationalError:
         db.rollback()
         raise HTTPException(status_code=500, detail="Erro ao criar pedido no banco de dados")
+
+
+@router.get("/")
+def listar_pedidos_admin(
+    admin: dict = Depends(exigir_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        return listar_todos_pedidos(db)
+    except OperationalError:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Erro ao consultar o banco de dados")
 
 
 @router.get("/meus")

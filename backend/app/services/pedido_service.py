@@ -54,6 +54,28 @@ def criar_pedido(db: Session, usuario_id: int, dados: CriarPedido) -> dict:
     }
 
 
+def _serializar_pedido(pedido: Pedido) -> dict:
+    return {
+        "id": pedido.id,
+        "total": pedido.total,
+        "status": pedido.status,
+        "data_criacao": pedido.data_criacao,
+        "cliente": {
+            "nome": pedido.usuario.name,
+            "email": pedido.usuario.email,
+        },
+        "itens": [
+            {
+                "produto_id": item.produto_id,
+                "nome": item.produto.name,
+                "quantidade": item.quantidade,
+                "preco_unitario": item.preco_unitario,
+            }
+            for item in pedido.itens
+        ],
+    }
+
+
 def listar_pedidos_do_usuario(db: Session, usuario_id: int) -> list[dict]:
     pedidos = (
         db.query(Pedido)
@@ -61,24 +83,12 @@ def listar_pedidos_do_usuario(db: Session, usuario_id: int) -> list[dict]:
         .order_by(Pedido.data_criacao.desc())
         .all()
     )
-    return [
-        {
-            "id": pedido.id,
-            "total": pedido.total,
-            "status": pedido.status,
-            "data_criacao": pedido.data_criacao,
-            "itens": [
-                {
-                    "produto_id": item.produto_id,
-                    "nome": item.produto.name,
-                    "quantidade": item.quantidade,
-                    "preco_unitario": item.preco_unitario,
-                }
-                for item in pedido.itens
-            ],
-        }
-        for pedido in pedidos
-    ]
+    return [_serializar_pedido(pedido) for pedido in pedidos]
+
+
+def listar_todos_pedidos(db: Session) -> list[dict]:
+    pedidos = db.query(Pedido).order_by(Pedido.data_criacao.desc()).all()
+    return [_serializar_pedido(pedido) for pedido in pedidos]
 
 
 def mudar_status(db: Session, pedido_id: int, novo_status: StatusPedido) -> dict:
