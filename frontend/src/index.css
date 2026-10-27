@@ -1,3 +1,4 @@
+@import "./styles/tokens.css";
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 * {
@@ -12,7 +13,7 @@ body,
 }
 
 body {
-    font-family: "Archivo", sans-serif;
-    color: #0b0b0b;
-    background-color: #ffffff;
+    font-family: var(--fonte-base);
+    color: var(--cor-tinta);
+    background-color: var(--cor-papel);
 }

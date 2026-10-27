@@ -1,19 +1,25 @@
-import { requisitar, ErroApi } from "./api";
+import { requisitar } from "./api";
 
 export const produtosService = {
-    // a API responde 404 quando não há produtos; para a vitrine isso é lista vazia
-    listar: async () => {
-        try {
-            const dados = await requisitar("/produtos/");
+    listar: async ({ busca, categoria, ordenar } = {}) => {
+        const parametros = new URLSearchParams();
 
-            return Array.isArray(dados) ? dados : [];
-        } catch (erro) {
-            if (erro instanceof ErroApi && erro.status === 404) {
-                return [];
-            }
+        if (busca) parametros.set("busca", busca);
+        if (categoria) parametros.set("categoria", categoria);
+        if (ordenar) parametros.set("ordenar", ordenar);
 
-            throw erro;
-        }
+        const consulta = parametros.toString();
+        const dados = await requisitar(
+            consulta ? `/produtos/?${consulta}` : "/produtos/"
+        );
+
+        return Array.isArray(dados) ? dados : [];
+    },
+
+    listarCategorias: async () => {
+        const dados = await requisitar("/produtos/categorias");
+
+        return Array.isArray(dados) ? dados : [];
     },
 
     criar: (produto) =>

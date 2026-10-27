@@ -1,5 +1,6 @@
 import { BotaoFavorito } from '../botoes/BotaoFavorito'
 import { usarCarrinho } from '../../hooks/usarCarrinho'
+import { formatarPreco } from '../../utils/formatarPreco'
 import './ProdutoCard.css'
 
 export function ProdutoCard({ produto }) {
@@ -9,14 +10,23 @@ export function ProdutoCard({ produto }) {
 
     return (
         <div className="card-produto">
-            <img 
-                src={produto.imagem_url} 
-                alt={produto.name} 
-                className="card-imagem"
-            />
+            <div className="card-moldura">
+                {produto.imagem_url ? (
+                    <img
+                        src={produto.imagem_url}
+                        alt={produto.name}
+                        className="card-imagem"
+                        loading="lazy"
+                    />
+                ) : (
+                    <div className="card-placeholder" role="img" aria-label="Sem imagem">
+                        <span>WP</span>
+                    </div>
+                )}
+            </div>
             <div className="card-conteudo">
                 <h2 className="card-titulo">{produto.name}</h2>
-                <p className="card-preco">R$ {produto.preco}</p>
+                <p className="card-preco">{formatarPreco(produto.preco)}</p>
                 <button
                     type="button"
                     className="card-botao-sacola"
@@ -31,5 +41,3 @@ export function ProdutoCard({ produto }) {
         </div>
     )
 }
-
-

@@ -1,0 +1,44 @@
+.filtro {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: var(--espaco-5);
+    margin-bottom: var(--espaco-5);
+}
+
+.filtro-campo {
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--espaco-2);
+}
+
+.filtro-campo span {
+    font-family: var(--fonte-base);
+    font-size: var(--texto-sm);
+    font-weight: 700;
+
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+}
+
+.filtro-campo select {
+    min-width: 180px;
+    height: 40px;
+
+    padding: 0 var(--espaco-3);
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 0;
+
+    background-color: var(--cor-papel);
+    color: var(--cor-tinta);
+
+    font-family: var(--fonte-base);
+    font-size: var(--texto-base);
+}
+
+.filtro-campo select:focus-visible {
+    outline: 2px solid var(--cor-tinta);
+    outline-offset: 2px;
+}

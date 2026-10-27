@@ -1,19 +1,63 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { produtosService } from "../services/produtosService";
 
-export function usarProdutos() {
+export function usarCategorias() {
+
+    const [categorias, setCategorias] = useState([]);
+
+    useEffect(() => {
+        let ativo = true;
+
+        // sem categorias o filtro simplesmente não aparece; a vitrine segue funcionando
+        produtosService
+            .listarCategorias()
+            .then((lista) => ativo && setCategorias(lista))
+            .catch(() => ativo && setCategorias([]));
+
+        return () => {
+            ativo = false;
+        };
+    }, []);
+
+    return { categorias };
+}
+
+export function usarProdutos({ busca, categoria, ordenar } = {}) {
 
     const [produtos, setProdutos] = useState([]);
     const [erro, setErro] = useState("");
+    const [carregando, setCarregando] = useState(true);
+
+    // a requisição mais recente é a única que pode atualizar o estado
+    const ultimaRequisicao = useRef(0);
 
     const carregar = useCallback(async () => {
+        const requisicao = ++ultimaRequisicao.current;
+
+        setErro("");
+        setCarregando(true);
+
         try {
-            setProdutos(await produtosService.listar());
+            const lista = await produtosService.listar({
+                busca,
+                categoria,
+                ordenar,
+            });
+
+            if (requisicao !== ultimaRequisicao.current) return;
+
+            setProdutos(lista);
         } catch (falha) {
+            if (requisicao !== ultimaRequisicao.current) return;
+
             setProdutos([]);
             setErro(falha.message);
+        } finally {
+            if (requisicao === ultimaRequisicao.current) {
+                setCarregando(false);
+            }
         }
-    }, []);
+    }, [busca, categoria, ordenar]);
 
     useEffect(() => {
         carregar();
@@ -51,6 +95,7 @@ export function usarProdutos() {
     return {
         produtos,
         erro,
+        carregando,
         carregar,
         salvar,
         excluir,

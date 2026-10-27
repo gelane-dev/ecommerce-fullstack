@@ -1,0 +1,42 @@
+:root {
+    /* cores */
+    --cor-tinta: #0B0B0B;
+    --cor-papel: #FFFFFF;
+    --cor-cinza-medio: #5E5E5E;
+    --cor-cinza-claro: #A8A8A8;
+    --cor-borda: #E0E0E0;
+    --cor-erro: #B00020;
+
+    /* famílias de fonte */
+    --fonte-base: "Archivo", sans-serif;
+    --fonte-mono: "JetBrains Mono", monospace;
+
+    /* escala tipográfica */
+    --texto-xs: 9px;
+    --texto-sm: 10px;
+    --texto-nav: 11px;
+    --texto-base: 13px;
+    --texto-md: 15px;
+    --texto-lg: 20px;
+    --texto-xl: 32px;
+
+    /* escala de espaçamento */
+    --espaco-1: 4px;
+    --espaco-2: 8px;
+    --espaco-3: 12px;
+    --espaco-4: 16px;
+    --espaco-5: 24px;
+    --espaco-6: 40px;
+    --espaco-7: 64px;
+
+    /* letter-spacing */
+    --tracking-nav: 0.16em;
+    --tracking-mono: 0.04em;
+    --tracking-titulo: -0.035em;
+
+    /* transições */
+    --transicao-rapida: 0.2s ease;
+
+    /* layout */
+    --altura-header: 76px;
+}
