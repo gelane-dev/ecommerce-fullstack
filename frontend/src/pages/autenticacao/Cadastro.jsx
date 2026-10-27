@@ -1,56 +1,29 @@
-import { useState } from "react";
 import "./Login.css";
 import imagemLogin from "../../assets/login-arte.png";
 import { Link, useNavigate } from "react-router-dom";
+import { usarFormulario } from "../../hooks/usarFormulario";
+import { usarEnvio } from "../../hooks/usarEnvio";
+import { autenticacaoService } from "../../services/autenticacaoService";
 
 export const Cadastro = () => {
     const navigate = useNavigate();
 
-    const [nome, setNome] = useState("");
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [mensagem, setMensagem] = useState("");
-    const [carregando, setCarregando] = useState(false);
+    const { valores, alterar } = usarFormulario({
+        name: "",
+        email: "",
+        senha: "",
+    });
+    const { enviar, carregando, mensagem } = usarEnvio(
+        autenticacaoService.cadastrar
+    );
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        setCarregando(true);
-        setMensagem("");
+        const { ok } = await enviar(valores);
 
-        try {
-            const resposta = await fetch(
-                "http://localhost:8001/cadastro/",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: nome,
-                        email,
-                        senha,
-                    }),
-                }
-            );
-
-            const dados = await resposta.json();
-
-            if (resposta.ok) {
-                navigate("/login");
-            } else {
-                setMensagem(
-                    typeof dados.detail === "string"
-                        ? dados.detail
-                        : "Verifique os dados informados."
-                );
-            }
-        } catch (erro) {
-            setMensagem(
-                "Não foi possível conectar ao servidor."
-            );
-        } finally {
-            setCarregando(false);
+        if (ok) {
+            navigate("/login");
         }
     };
 
@@ -102,10 +75,11 @@ export const Cadastro = () => {
 
                             <input
                                 id="nome"
+                                name="name"
                                 type="text"
                                 placeholder="Digite seu nome"
-                                value={nome}
-                                onChange={(e) => setNome(e.target.value)}
+                                value={valores.name}
+                                onChange={alterar}
                                 minLength={3}
                                 maxLength={100}
                                 required
@@ -121,10 +95,11 @@ export const Cadastro = () => {
 
                             <input
                                 id="email"
+                                name="email"
                                 type="email"
                                 placeholder="Digite seu email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={valores.email}
+                                onChange={alterar}
                                 required
                             />
 
@@ -138,10 +113,11 @@ export const Cadastro = () => {
 
                             <input
                                 id="senha"
+                                name="senha"
                                 type="password"
                                 placeholder="Mínimo de 6 caracteres"
-                                value={senha}
-                                onChange={(e) => setSenha(e.target.value)}
+                                value={valores.senha}
+                                onChange={alterar}
                                 minLength={6}
                                 required
                             />

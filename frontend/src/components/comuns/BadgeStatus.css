@@ -1,0 +1,21 @@
+.badge-status {
+    display: inline-block;
+    padding: 4px 12px;
+
+    border: 1px solid #0B0B0B;
+
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.badge-status-pago,
+.badge-status-enviado {
+    border-color: #2E7D32;
+    color: #2E7D32;
+}
+
+.badge-status-cancelado {
+    border-color: #B00020;
+    color: #B00020;
+}

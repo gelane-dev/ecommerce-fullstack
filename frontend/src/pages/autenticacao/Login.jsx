@@ -1,68 +1,29 @@
-import { useState } from "react";
 import "./Login.css";
 import imagemLogin from "../../assets/login-arte.png";
 import { Link, useNavigate } from "react-router-dom";
 import { usarAutenticacao } from "../../hooks/usarAutenticacao";
+import { usarFormulario } from "../../hooks/usarFormulario";
+import { usarEnvio } from "../../hooks/usarEnvio";
+import { autenticacaoService } from "../../services/autenticacaoService";
 
 export const Login = () => {
     const navigate = useNavigate();
     const { entrar } = usarAutenticacao();
 
-    const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [mensagem, setMensagem] = useState("");
-    const [carregando, setCarregando] = useState(false);
-
-    const alterarEmail = (event) => {
-        setEmail(event.target.value);
-    };
-
-    const alterarSenha = (event) => {
-        setSenha(event.target.value);
-    };
+    const { valores, alterar } = usarFormulario({ email: "", senha: "" });
+    const { enviar, carregando, mensagem } = usarEnvio(
+        autenticacaoService.login
+    );
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        setCarregando(true);
-        setMensagem("");
+        const { ok, resultado } = await enviar(valores);
 
-        try {
-            const resposta = await fetch(
-                "http://localhost:8001/login/",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email,
-                        senha,
-                    }),
-                }
-            );
+        if (ok) {
+            entrar(resultado.access_token, resultado.usuario);
 
-            const dados = await resposta.json();
-
-            if (resposta.ok) {
-                entrar(
-                    dados.access_token,
-                    dados.usuario || { nome: email, email }
-                );
-
-                navigate("/");
-            } else {
-                setMensagem(
-                    dados.detail ||
-                    "Erro ao realizar login."
-                );
-            }
-        } catch (erro) {
-            setMensagem(
-                "Não foi possível conectar ao servidor."
-            );
-        } finally {
-            setCarregando(false);
+            navigate("/");
         }
     };
 
@@ -134,10 +95,11 @@ export const Login = () => {
 
                             <input
                                 id="email"
+                                name="email"
                                 type="email"
                                 placeholder="Digite seu email"
-                                value={email}
-                                onChange={alterarEmail}
+                                value={valores.email}
+                                onChange={alterar}
                                 required
                             />
 
@@ -151,10 +113,11 @@ export const Login = () => {
 
                             <input
                                 id="senha"
+                                name="senha"
                                 type="password"
                                 placeholder="Digite sua senha"
-                                value={senha}
-                                onChange={alterarSenha}
+                                value={valores.senha}
+                                onChange={alterar}
                                 required
                             />
 

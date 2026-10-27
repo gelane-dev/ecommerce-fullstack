@@ -1,0 +1,38 @@
+.resumo-carrinho {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+
+    margin-top: 32px;
+}
+
+.resumo-carrinho-total {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+
+    font-size: 12px;
+    letter-spacing: 0.16em;
+}
+
+.resumo-carrinho-total strong {
+    font-size: 24px;
+}
+
+.resumo-carrinho-finalizar {
+    padding: 16px 32px;
+
+    border: none;
+    background-color: #0B0B0B;
+    color: #FFFFFF;
+    cursor: pointer;
+
+    font-size: 12px;
+    letter-spacing: 0.16em;
+}
+
+.resumo-carrinho-finalizar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
