@@ -47,6 +47,12 @@ export const Header = () => {
                             Olá, {usuario.nome}
                         </span>
 
+                        {usuario.tipo === "admin" && (
+                            <Link to="/admin">
+                                ADMIN
+                            </Link>
+                        )}
+
                         <Link to="/pedidos">
                             PEDIDOS
                         </Link>

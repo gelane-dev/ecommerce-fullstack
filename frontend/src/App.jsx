@@ -4,6 +4,8 @@ import { Login } from "./pages/autenticacao/Login";
 import { Cadastro } from "./pages/autenticacao/Cadastro";
 import { Carrinho } from "./pages/carrinho/Carrinho";
 import { MeusPedidos } from "./pages/pedidos/MeusPedidos";
+import { Admin } from "./pages/admin/Admin";
+import { RotaProtegida } from "./components/rotas/RotaProtegida";
 import { ProvedorCarrinho } from "./context/CartContext";
 import { Header } from "./components/header/Header";
 import { ProvedorAutenticacao } from "./context/AuthContext";
@@ -44,7 +46,20 @@ function Layout() {
 
                 <Route
                     path="/pedidos"
-                    element={<MeusPedidos />}
+                    element={
+                        <RotaProtegida>
+                            <MeusPedidos />
+                        </RotaProtegida>
+                    }
+                />
+
+                <Route
+                    path="/admin"
+                    element={
+                        <RotaProtegida somenteAdmin>
+                            <Admin />
+                        </RotaProtegida>
+                    }
                 />
 
                 <Route
