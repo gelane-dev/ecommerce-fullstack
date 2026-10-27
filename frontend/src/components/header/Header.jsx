@@ -1,10 +1,65 @@
+import { useState } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import logoWhitePony from "../../assets/login-arte.png";
 import { usarAutenticacao } from "../../hooks/usarAutenticacao";
 import { usarCarrinho } from "../../hooks/usarCarrinho";
 
+const FormBusca = ({ valorInicial, aoBuscar }) => {
+    const [termo, setTermo] = useState(valorInicial);
+    const [anterior, setAnterior] = useState(valorInicial);
+
+    // a URL mudou por fora (voltar, link): ajusta durante o render, sem remontar o input
+    if (valorInicial !== anterior) {
+        setAnterior(valorInicial);
+        setTermo(valorInicial);
+    }
+
+    const mudar = (valor) => {
+        setTermo(valor);
+
+        // limpar o campo volta ao catálogo completo sem exigir novo submit
+        if (valor === "" && valorInicial) aoBuscar("");
+    };
+
+    return (
+        <form
+            className="header-busca"
+            role="search"
+            onSubmit={(evento) => {
+                evento.preventDefault();
+                aoBuscar(termo.trim());
+            }}
+        >
+            <label htmlFor="header-busca-campo">BUSCAR</label>
+            <input
+                id="header-busca-campo"
+                type="search"
+                value={termo}
+                onChange={(e) => mudar(e.target.value)}
+            />
+        </form>
+    );
+};
+
 export const Header = () => {
+    const navigate = useNavigate();
+    const [parametros] = useSearchParams();
+    const buscaAtual = parametros.get("busca") ?? "";
+    const naHome = useLocation().pathname === "/";
+
+    // a busca vive na URL da Home; de outras páginas ela navega para lá
+    const buscar = (termo) => {
+        const proximos = new URLSearchParams(naHome ? parametros : undefined);
+
+        if (termo) proximos.set("busca", termo);
+        else proximos.delete("busca");
+
+        const consulta = proximos.toString();
+
+        navigate({ pathname: "/", search: consulta ? `?${consulta}` : "" });
+    };
+
     const { usuario, estaAutenticado, sair } = usarAutenticacao();
     const { quantidadeTotal } = usarCarrinho();
 
@@ -14,14 +69,6 @@ export const Header = () => {
             <nav className="header-esquerda">
                 <Link to="/#colecao">
                     COLEÇÃO
-                </Link>
-
-                <Link to="/#indice">
-                    CATEGORIAS
-                </Link>
-
-                <Link to="/#oferta">
-                    EDIÇÃO LIMITADA
                 </Link>
             </nav>
 
@@ -37,15 +84,16 @@ export const Header = () => {
             </Link>
 
             <nav className="header-direita">
-                <Link to="/buscar">
-                    BUSCAR
-                </Link>
+                <FormBusca
+                    valorInicial={buscaAtual}
+                    aoBuscar={buscar}
+                />
 
                 {estaAutenticado ? (
                     <>
-                        <span className="header-usuario">
+                        <Link to="/perfil" className="header-usuario">
                             Olá, {usuario.nome}
-                        </span>
+                        </Link>
 
                         {usuario.tipo === "admin" && (
                             <Link to="/admin">

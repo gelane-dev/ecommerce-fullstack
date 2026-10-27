@@ -11,10 +11,10 @@
 
     padding: 0 40px;
 
-    border-bottom: 1px solid #0B0B0B;
+    border-bottom: 1px solid var(--cor-tinta);
 
-    background-color: #FFFFFF;
-    color: #0B0B0B;
+    background-color: var(--cor-papel);
+    color: var(--cor-tinta);
 
     gap: 16px;
 }
@@ -29,20 +29,20 @@
 
     gap: 28px;
 
-    font-family: "Archivo", sans-serif;
+    font-family: var(--fonte-base);
     font-size: 11px;
     font-weight: 500;
 
-    letter-spacing: 0.16em;
+    letter-spacing: var(--tracking-nav);
     text-transform: uppercase;
 }
 
 .header-esquerda a {
-    color: #0B0B0B;
+    color: var(--cor-tinta);
 
     text-decoration: none;
 
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transicao-rapida);
 }
 
 .header-esquerda a:hover {
@@ -77,20 +77,20 @@
 
     gap: 28px;
 
-    font-family: "Archivo", sans-serif;
+    font-family: var(--fonte-base);
     font-size: 11px;
     font-weight: 500;
 
-    letter-spacing: 0.16em;
+    letter-spacing: var(--tracking-nav);
     text-transform: uppercase;
 }
 
 .header-direita a {
-    color: #0B0B0B;
+    color: var(--cor-tinta);
 
     text-decoration: none;
 
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transicao-rapida);
 }
 
 .header-direita a:hover {
@@ -103,14 +103,14 @@
 
     border: none;
     background: none;
-    color: #0B0B0B;
+    color: var(--cor-tinta);
     cursor: pointer;
 
     font: inherit;
     letter-spacing: inherit;
     text-transform: inherit;
 
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transicao-rapida);
 }
 
 .header-sair:hover {
@@ -123,7 +123,7 @@
 ========================= */
 
 .header a:focus-visible {
-    outline: 2px solid #0B0B0B;
+    outline: 2px solid var(--cor-tinta);
     outline-offset: 4px;
 }
 
@@ -168,4 +168,67 @@
     .header-logo img {
         height: 36px;
     }
+}
+
+/* =========================
+   BUSCA
+========================= */
+
+.header-busca {
+    display: flex;
+    align-items: center;
+
+    gap: var(--espaco-2);
+}
+
+.header-busca input {
+    width: 160px;
+    height: 32px;
+
+    padding: 0 var(--espaco-2);
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 0;
+
+    background-color: var(--cor-papel);
+    color: var(--cor-tinta);
+
+    font-family: var(--fonte-base);
+    font-size: var(--texto-base);
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.header-busca input:focus-visible {
+    outline: 2px solid var(--cor-tinta);
+    outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+    .header-busca input {
+        width: 110px;
+    }
+}
+
+@media (max-width: 700px) {
+    .header-busca label {
+        display: none;
+    }
+
+    .header-busca input {
+        width: 90px;
+    }
+}
+
+
+/* =========================
+   CONTA
+========================= */
+
+.header-direita .header-usuario {
+    max-width: 160px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

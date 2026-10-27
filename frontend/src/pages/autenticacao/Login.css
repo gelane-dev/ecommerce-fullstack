@@ -18,11 +18,6 @@ body,
     margin: 0;
 }
 
-body {
-    overflow: hidden;
-}
-
-
 /* =========================
    LOGIN
 ========================= */
@@ -427,10 +422,6 @@ body {
 ========================= */
 
 @media (max-width: 1000px) {
-    body {
-        overflow: auto;
-    }
-
     .login {
         height: auto;
         min-height: 100vh;
@@ -485,10 +476,6 @@ body {
 ========================= */
 
 @media (max-width: 600px) {
-    body {
-        overflow: auto;
-    }
-
     .login {
         min-height: 100vh;
         height: auto;

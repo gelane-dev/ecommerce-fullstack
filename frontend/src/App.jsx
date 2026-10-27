@@ -1,9 +1,10 @@
-import "./App.css";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/autenticacao/Login";
 import { Cadastro } from "./pages/autenticacao/Cadastro";
 import { Carrinho } from "./pages/carrinho/Carrinho";
 import { MeusPedidos } from "./pages/pedidos/MeusPedidos";
+import { Perfil } from "./pages/conta/Perfil";
+import { Configuracoes } from "./pages/conta/Configuracoes";
 import { Admin } from "./pages/admin/Admin";
 import { RotaProtegida } from "./components/rotas/RotaProtegida";
 import { ProvedorCarrinho } from "./context/CartContext";
@@ -17,16 +18,16 @@ import {
     useLocation,
 } from "react-router-dom";
 
+const ROTAS_SEM_HEADER = ["/login", "/cadastro"];
+
 function Layout() {
     const location = useLocation();
 
-    const estaNoLogin =
-        location.pathname === "/login" ||
-        location.pathname === "/cadastro";
+    const semHeader = ROTAS_SEM_HEADER.includes(location.pathname);
 
     return (
         <>
-            {!estaNoLogin && <Header />}
+            {!semHeader && <Header />}
 
             <Routes>
                 <Route
@@ -49,6 +50,24 @@ function Layout() {
                     element={
                         <RotaProtegida>
                             <MeusPedidos />
+                        </RotaProtegida>
+                    }
+                />
+
+                <Route
+                    path="/perfil"
+                    element={
+                        <RotaProtegida>
+                            <Perfil />
+                        </RotaProtegida>
+                    }
+                />
+
+                <Route
+                    path="/configuracoes"
+                    element={
+                        <RotaProtegida>
+                            <Configuracoes />
                         </RotaProtegida>
                     }
                 />

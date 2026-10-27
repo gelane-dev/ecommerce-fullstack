@@ -78,6 +78,19 @@ export function ProvedorAutenticacao({ children }) {
         setUsuario(null);
     };
 
+    // mantém memória e localStorage alinhados com o que a API gravou
+    const atualizarUsuario = (dadosParciais) => {
+
+        const atualizado = { ...usuario, ...dadosParciais };
+
+        localStorage.setItem(
+            "@WhitePony:usuario",
+            JSON.stringify(atualizado)
+        );
+
+        setUsuario(atualizado);
+    };
+
     return (
         <ContextoAutenticacao.Provider
             value={{
@@ -86,6 +99,7 @@ export function ProvedorAutenticacao({ children }) {
                 carregando,
                 entrar,
                 sair,
+                atualizarUsuario,
             }}
         >
             {children}

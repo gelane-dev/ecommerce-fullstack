@@ -1,0 +1,158 @@
+.config {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--espaco-6) var(--espaco-4);
+
+    font-family: var(--fonte-base);
+    color: var(--cor-tinta);
+}
+
+.config-titulo {
+    margin: 0 0 var(--espaco-3);
+
+    font-size: var(--texto-xl);
+    font-weight: 800;
+
+    line-height: 0.92;
+    letter-spacing: var(--tracking-titulo);
+    text-transform: uppercase;
+}
+
+.config-voltar {
+    display: inline-block;
+    margin-bottom: var(--espaco-6);
+
+    color: var(--cor-tinta);
+
+    font-size: var(--texto-sm);
+    font-weight: 500;
+
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+}
+
+.config-estado {
+    margin: 0;
+    padding: var(--espaco-7) 0;
+
+    color: var(--cor-cinza-medio);
+    text-align: center;
+
+    font-family: var(--fonte-mono);
+    font-size: var(--texto-base);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+}
+
+.config-erro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: var(--espaco-4);
+}
+
+.config-formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: var(--espaco-5);
+    margin-bottom: var(--espaco-7);
+    padding-bottom: var(--espaco-6);
+
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.config-formulario h2 {
+    margin: 0;
+
+    font-size: var(--texto-lg);
+    font-weight: 800;
+
+    letter-spacing: var(--tracking-titulo);
+    text-transform: uppercase;
+}
+
+.config-campo {
+    width: 100%;
+}
+
+.config-campo label {
+    display: block;
+    margin-bottom: var(--espaco-2);
+
+    font-size: var(--texto-sm);
+    font-weight: 700;
+
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+}
+
+.config-campo input {
+    display: block;
+
+    width: 100%;
+    height: 44px;
+
+    padding: 0;
+
+    border: none;
+    border-bottom: 1px solid var(--cor-tinta);
+    border-radius: 0;
+
+    background: transparent;
+    color: var(--cor-tinta);
+
+    font-family: var(--fonte-base);
+    font-size: var(--texto-md);
+}
+
+.config-campo input:focus-visible {
+    outline: none;
+    border-bottom-width: 2px;
+}
+
+.config-botao {
+    padding: var(--espaco-3) var(--espaco-5);
+
+    border: 1px solid var(--cor-tinta);
+    border-radius: 0;
+
+    background-color: var(--cor-tinta);
+    color: var(--cor-papel);
+    cursor: pointer;
+
+    font-family: var(--fonte-base);
+    font-size: var(--texto-sm);
+    font-weight: 500;
+
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+
+    transition: opacity var(--transicao-rapida);
+}
+
+.config-botao:hover {
+    opacity: 0.6;
+}
+
+.config-botao:focus-visible {
+    outline: 2px solid var(--cor-tinta);
+    outline-offset: 3px;
+}
+
+.config-botao:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+
+.config-sucesso {
+    margin: 0;
+
+    color: var(--cor-cinza-medio);
+
+    font-family: var(--fonte-mono);
+    font-size: var(--texto-base);
+    letter-spacing: var(--tracking-mono);
+}

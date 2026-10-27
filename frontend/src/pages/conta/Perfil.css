@@ -1,0 +1,111 @@
+.perfil {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--espaco-6) var(--espaco-4);
+
+    font-family: var(--fonte-base);
+    color: var(--cor-tinta);
+}
+
+.perfil-titulo {
+    margin: 0 0 var(--espaco-5);
+
+    font-size: var(--texto-xl);
+    font-weight: 800;
+
+    line-height: 0.92;
+    letter-spacing: var(--tracking-titulo);
+    text-transform: uppercase;
+}
+
+.perfil-estado {
+    margin: 0;
+    padding: var(--espaco-7) 0;
+
+    color: var(--cor-cinza-medio);
+    text-align: center;
+
+    font-family: var(--fonte-mono);
+    font-size: var(--texto-base);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+}
+
+.perfil-erro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: var(--espaco-4);
+}
+
+.perfil-dados {
+    margin: 0 0 var(--espaco-6);
+}
+
+.perfil-dados > div {
+    padding: var(--espaco-4) 0;
+
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.perfil-dados dt {
+    margin-bottom: var(--espaco-1);
+
+    color: var(--cor-cinza-medio);
+
+    font-size: var(--texto-sm);
+    font-weight: 700;
+
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+}
+
+.perfil-dados dd {
+    margin: 0;
+
+    font-size: var(--texto-md);
+}
+
+.perfil-acoes {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: var(--espaco-3);
+}
+
+.perfil-botao {
+    display: inline-block;
+    padding: var(--espaco-3) var(--espaco-5);
+
+    border: 1px solid var(--cor-tinta);
+    border-radius: 0;
+
+    background-color: var(--cor-tinta);
+    color: var(--cor-papel);
+    cursor: pointer;
+    text-decoration: none;
+
+    font-family: var(--fonte-base);
+    font-size: var(--texto-sm);
+    font-weight: 500;
+
+    letter-spacing: var(--tracking-nav);
+    text-transform: uppercase;
+
+    transition: opacity var(--transicao-rapida);
+}
+
+.perfil-botao-claro {
+    background-color: var(--cor-papel);
+    color: var(--cor-tinta);
+}
+
+.perfil-botao:hover {
+    opacity: 0.6;
+}
+
+.perfil-botao:focus-visible {
+    outline: 2px solid var(--cor-tinta);
+    outline-offset: 3px;
+}
