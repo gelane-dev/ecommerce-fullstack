@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 import cloudinary.uploader
 
@@ -14,14 +15,44 @@ router = APIRouter(prefix="/produtos", tags=["Produtos"])
 
 
 @router.get("/")
-def buscar_produtos(db: Session = Depends(get_db)):
+def buscar_produtos(
+    busca: str | None = None,
+    categoria: str | None = None,
+    ordenar: Literal["preco_asc", "preco_desc", "recentes"] | None = None,
+    db: Session = Depends(get_db),
+):
     try:
-        buscar = db.query(Produto).all()
-        if not buscar:
-            raise HTTPException(status_code=404, detail="produto não encontrado")
-        return buscar
-    except HTTPException:
-        raise
+        consulta = db.query(Produto)
+
+        if busca is not None and busca.strip():
+            termo = busca.strip().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+            consulta = consulta.filter(Produto.name.ilike(f"%{termo}%", escape="\\"))
+        if categoria is not None:
+            consulta = consulta.filter(Produto.categoria == categoria)
+
+        if ordenar == "preco_asc":
+            consulta = consulta.order_by(Produto.preco.asc())
+        elif ordenar == "preco_desc":
+            consulta = consulta.order_by(Produto.preco.desc())
+        elif ordenar == "recentes":
+            consulta = consulta.order_by(Produto.data_criacao.desc())
+
+        return consulta.all()
+    except OperationalError:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Erro ao consultar o banco de dados")
+
+
+@router.get("/categorias")
+def buscar_categorias(db: Session = Depends(get_db)):
+    try:
+        linhas = (
+            db.query(Produto.categoria)
+            .distinct()
+            .order_by(Produto.categoria.asc())
+            .all()
+        )
+        return [linha[0] for linha in linhas]
     except OperationalError:
         db.rollback()
         raise HTTPException(status_code=500, detail="Erro ao consultar o banco de dados")

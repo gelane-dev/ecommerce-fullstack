@@ -69,6 +69,7 @@ def test_openapi_mantem_tags_e_caminhos():
         "/login/",
         "/cadastro/",
         "/produtos/",
+        "/produtos/categorias",
         "/produtos/{id}",
         "/produtos/{id}/imagem",
         "/pedidos/",
