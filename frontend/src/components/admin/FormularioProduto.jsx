@@ -7,6 +7,7 @@ const VAZIO = {
     categoria: "",
     preco: "",
     estoque: "",
+    descricao: "",
 };
 
 export const FormularioProduto = ({
@@ -23,6 +24,7 @@ export const FormularioProduto = ({
                 categoria: produtoEditando.categoria,
                 preco: String(produtoEditando.preco),
                 estoque: String(produtoEditando.estoque),
+                descricao: produtoEditando.descricao ?? "",
             });
         } else {
             limpar();
@@ -38,6 +40,7 @@ export const FormularioProduto = ({
             categoria: valores.categoria,
             preco: Number(valores.preco),
             estoque: Number(valores.estoque),
+            descricao: valores.descricao,
         });
 
         if (salvou) {
@@ -89,6 +92,14 @@ export const FormularioProduto = ({
                 value={valores.estoque}
                 onChange={alterar}
                 required
+            />
+
+            <textarea
+                name="descricao"
+                placeholder="Descrição (opcional)"
+                rows={4}
+                value={valores.descricao}
+                onChange={alterar}
             />
 
             <div className="formulario-produto-acoes">
