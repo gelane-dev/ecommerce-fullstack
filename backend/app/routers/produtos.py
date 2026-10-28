@@ -58,6 +58,22 @@ def buscar_categorias(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Erro ao consultar o banco de dados")
 
 
+@router.get("/{id}")
+def buscar_produto(id: int, db: Session = Depends(get_db)):
+    try:
+        produto = db.query(Produto).filter(Produto.id == id).first()
+
+        if produto is None:
+            raise HTTPException(status_code=404, detail="Produto não encontrado")
+
+        return produto
+    except HTTPException:
+        raise
+    except OperationalError:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Erro ao consultar o banco de dados")
+
+
 @router.post("/", status_code=201)
 def criar_produtos(
     produto: CriarProduto,
@@ -75,6 +91,7 @@ def criar_produtos(
             categoria=produto.categoria,
             preco=produto.preco,
             estoque=produto.estoque,
+            descricao=produto.descricao,
             data_criacao=datetime.now(),
         )
         db.add(criar)
@@ -168,6 +185,8 @@ def atualizar_produtos(
             alteracao.preco = produto.preco
         if produto.estoque is not None:
             alteracao.estoque = produto.estoque
+        if produto.descricao is not None:
+            alteracao.descricao = produto.descricao
 
         db.add(alteracao)
         db.commit()

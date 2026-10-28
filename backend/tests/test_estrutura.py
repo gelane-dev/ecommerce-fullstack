@@ -41,6 +41,7 @@ def test_modelos_preservam_tabelas_e_colunas():
             "preco",
             "estoque",
             "imagem_url",
+            "descricao",
             "data_criacao",
         },
         "usuarios": {"id", "role", "name", "email", "senha", "data_criacao"},

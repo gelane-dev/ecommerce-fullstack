@@ -311,3 +311,144 @@ def test_categorias_catalogo_vazio_devolve_200_lista_vazia(cliente):
 
     assert resp.status_code == 200
     assert resp.json() == []
+
+
+# --- detalhe do produto e descricao ---
+
+CAMPOS_PRODUTO = {"id", "name", "categoria", "preco", "estoque", "imagem_url", "descricao"}
+
+
+@pytest.fixture
+def produto_com_descricao(db):
+    produto = Produto(
+        name="Camiseta Pony",
+        categoria="Roupas",
+        preco=79.9,
+        estoque=7,
+        imagem_url="https://exemplo.com/camiseta.png",
+        descricao="Algodao 100%.\nModelagem reta.",
+    )
+    db.add(produto)
+    db.commit()
+    return produto
+
+
+def test_buscar_produto_devolve_200_com_todos_os_campos(cliente, produto_com_descricao):
+    resp = cliente.get(f"/produtos/{produto_com_descricao.id}")
+
+    assert resp.status_code == 200
+    corpo = resp.json()
+    assert CAMPOS_PRODUTO <= set(corpo)
+    assert corpo["id"] == produto_com_descricao.id
+    assert corpo["name"] == "Camiseta Pony"
+    assert corpo["categoria"] == "Roupas"
+    assert corpo["preco"] == 79.9
+    assert corpo["estoque"] == 7
+    assert corpo["imagem_url"] == "https://exemplo.com/camiseta.png"
+    assert corpo["descricao"] == "Algodao 100%.\nModelagem reta."
+
+
+def test_buscar_produto_inexistente_devolve_404(cliente, produto):
+    resp = cliente.get(f"/produtos/{produto.id + 999}")
+
+    assert resp.status_code == 404
+    assert resp.json()["detail"] == "Produto não encontrado"
+
+
+def test_buscar_produto_id_nao_numerico_devolve_422(cliente):
+    resp = cliente.get("/produtos/abc")
+
+    assert resp.status_code == 422
+
+
+def test_buscar_produto_nao_exige_autenticacao(cliente, produto):
+    resp = cliente.get(f"/produtos/{produto.id}")
+
+    assert resp.status_code == 200
+
+
+def test_buscar_produto_sem_descricao_devolve_null(cliente, produto):
+    resp = cliente.get(f"/produtos/{produto.id}")
+
+    assert resp.status_code == 200
+    assert "descricao" in resp.json()
+    assert resp.json()["descricao"] is None
+
+
+def test_categorias_nao_e_capturada_pela_rota_de_id(cliente, produto):
+    resp = cliente.get("/produtos/categorias")
+
+    assert resp.status_code == 200
+    assert resp.json() == ["cozinha"]
+
+
+def test_admin_cria_produto_com_descricao(cliente, headers_admin, db):
+    resp = cliente.post("/produtos/", headers=headers_admin, json={
+        "name": "panela",
+        "categoria": "cozinha",
+        "preco": 100,
+        "estoque": 10,
+        "descricao": "Panela de inox",
+    })
+
+    assert resp.status_code == 201
+    criado = db.query(Produto).filter(Produto.name == "panela").one()
+    assert criado.descricao == "Panela de inox"
+    assert cliente.get(f"/produtos/{criado.id}").json()["descricao"] == "Panela de inox"
+
+
+def test_admin_cria_produto_sem_descricao(cliente, headers_admin, db):
+    resp = cliente.post("/produtos/", headers=headers_admin, json={
+        "name": "panela",
+        "categoria": "cozinha",
+        "preco": 100,
+        "estoque": 10,
+    })
+
+    assert resp.status_code == 201
+    criado = db.query(Produto).filter(Produto.name == "panela").one()
+    assert criado.descricao is None
+
+
+def test_admin_atualiza_descricao(cliente, headers_admin, produto_com_descricao, db):
+    resp = cliente.put(f"/produtos/{produto_com_descricao.id}", headers=headers_admin, json={
+        "descricao": "Nova descricao",
+    })
+
+    assert resp.status_code == 200
+    db.refresh(produto_com_descricao)
+    assert produto_com_descricao.descricao == "Nova descricao"
+    assert produto_com_descricao.name == "Camiseta Pony"
+    assert cliente.get(f"/produtos/{produto_com_descricao.id}").json()["descricao"] == "Nova descricao"
+
+
+def test_atualizar_sem_enviar_descricao_preserva_a_existente(
+    cliente, headers_admin, produto_com_descricao, db
+):
+    resp = cliente.put(f"/produtos/{produto_com_descricao.id}", headers=headers_admin, json={
+        "preco": 99,
+    })
+
+    assert resp.status_code == 200
+    db.refresh(produto_com_descricao)
+    assert produto_com_descricao.descricao == "Algodao 100%.\nModelagem reta."
+    assert float(produto_com_descricao.preco) == 99
+
+
+def test_admin_limpa_descricao_com_string_vazia(cliente, headers_admin, produto_com_descricao, db):
+    resp = cliente.put(f"/produtos/{produto_com_descricao.id}", headers=headers_admin, json={
+        "descricao": "",
+    })
+
+    assert resp.status_code == 200
+    db.refresh(produto_com_descricao)
+    assert not produto_com_descricao.descricao
+
+
+def test_listar_produtos_inclui_descricao(cliente, produto_com_descricao, produto):
+    resp = cliente.get("/produtos/")
+
+    assert resp.status_code == 200
+    por_nome = {item["name"]: item for item in resp.json()}
+    assert por_nome["Camiseta Pony"]["descricao"] == "Algodao 100%.\nModelagem reta."
+    assert por_nome["panela"]["descricao"] is None
