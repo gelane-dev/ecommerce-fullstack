@@ -22,6 +22,8 @@ export const produtosService = {
         return Array.isArray(dados) ? dados : [];
     },
 
+    buscar: (id) => requisitar(`/produtos/${id}`),
+
     criar: (produto) =>
         requisitar("/produtos/", {
             metodo: "POST",

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { BotaoFavorito } from '../botoes/BotaoFavorito'
 import { usarCarrinho } from '../../hooks/usarCarrinho'
 import { formatarPreco } from '../../utils/formatarPreco'
@@ -10,22 +11,30 @@ export function ProdutoCard({ produto }) {
 
     return (
         <div className="card-produto">
-            <div className="card-moldura">
-                {produto.imagem_url ? (
-                    <img
-                        src={produto.imagem_url}
-                        alt={produto.name}
-                        className="card-imagem"
-                        loading="lazy"
-                    />
-                ) : (
-                    <div className="card-placeholder" role="img" aria-label="Sem imagem">
-                        <span>WP</span>
-                    </div>
-                )}
-            </div>
+            <Link
+                to={`/produto/${produto.id}`}
+                className="card-link"
+                aria-label={`Ver detalhes de ${produto.name}`}
+            >
+                <div className="card-moldura">
+                    {produto.imagem_url ? (
+                        <img
+                            src={produto.imagem_url}
+                            alt={produto.name}
+                            className="card-imagem"
+                            loading="lazy"
+                        />
+                    ) : (
+                        <div className="card-placeholder" role="img" aria-label="Sem imagem">
+                            <span>WP</span>
+                        </div>
+                    )}
+                </div>
+            </Link>
             <div className="card-conteudo">
-                <h2 className="card-titulo">{produto.name}</h2>
+                <Link to={`/produto/${produto.id}`} className="card-link">
+                    <h2 className="card-titulo">{produto.name}</h2>
+                </Link>
                 <p className="card-preco">{formatarPreco(produto.preco)}</p>
                 <button
                     type="button"

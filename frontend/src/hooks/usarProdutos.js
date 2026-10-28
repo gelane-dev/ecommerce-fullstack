@@ -22,6 +22,33 @@ export function usarCategorias() {
     return { categorias };
 }
 
+export function usarProduto(id) {
+
+    const [produto, setProduto] = useState(null);
+    const [erro, setErro] = useState("");
+    const [carregando, setCarregando] = useState(true);
+
+    useEffect(() => {
+        let ativo = true;
+
+        setProduto(null);
+        setErro("");
+        setCarregando(true);
+
+        produtosService
+            .buscar(id)
+            .then((dados) => ativo && setProduto(dados))
+            .catch((falha) => ativo && setErro(falha.message))
+            .finally(() => ativo && setCarregando(false));
+
+        return () => {
+            ativo = false;
+        };
+    }, [id]);
+
+    return { produto, erro, carregando };
+}
+
 export function usarProdutos({ busca, categoria, ordenar } = {}) {
 
     const [produtos, setProdutos] = useState([]);

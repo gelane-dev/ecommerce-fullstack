@@ -1,6 +1,7 @@
 import { Home } from "./pages/Home";
 import { Login } from "./pages/autenticacao/Login";
 import { Cadastro } from "./pages/autenticacao/Cadastro";
+import { Produto } from "./pages/produto/Produto";
 import { Carrinho } from "./pages/carrinho/Carrinho";
 import { MeusPedidos } from "./pages/pedidos/MeusPedidos";
 import { Perfil } from "./pages/conta/Perfil";
@@ -38,6 +39,11 @@ function Layout() {
                 <Route
                     path="/cadastro"
                     element={<Cadastro />}
+                />
+
+                <Route
+                    path="/produto/:id"
+                    element={<Produto />}
                 />
 
                 <Route
