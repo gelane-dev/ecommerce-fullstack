@@ -188,7 +188,7 @@
     padding: 0 var(--espaco-2);
 
     border: 1px solid var(--cor-borda);
-    border-radius: 0;
+    border-radius: 999px;
 
     background-color: var(--cor-papel);
     color: var(--cor-tinta);
