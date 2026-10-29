@@ -4,7 +4,7 @@ Aplicação de e-commerce desenvolvida como projeto de estudo e portfólio, com 
 
 O projeto tem como objetivo aplicar conceitos de desenvolvimento backend, autenticação, autorização, modelagem de dados, regras de negócio, gerenciamento de estoque e integração entre frontend e backend.
 
-> **Status:** em desenvolvimento. O backend possui recursos de autenticação, produtos e pedidos implementados. O frontend está em fase inicial. A execução dos testes e dos serviços Docker precisa ser validada no ambiente local.
+> **Status:** em desenvolvimento. O backend possui autenticação, perfil de usuário, produtos e pedidos implementados e cobertos por testes. O frontend integra catálogo, detalhes do produto, carrinho, pedidos, perfil e área administrativa. A execução com Docker Compose ainda precisa ser validada.
 
 ## Tecnologias
 
@@ -23,10 +23,12 @@ O projeto tem como objetivo aplicar conceitos de desenvolvimento backend, autent
 
 ### Frontend
 - React
+- React Router
 - JavaScript
 - Vite
 - CSS
 - ESLint
+- Vitest e Testing Library
 
 ### Ferramentas e serviços
 - Git e GitHub
@@ -42,15 +44,17 @@ O projeto tem como objetivo aplicar conceitos de desenvolvimento backend, autent
 - Senhas armazenadas com hash.
 - Diferenciação de permissões entre usuários e administradores.
 - Proteção de operações administrativas.
+- Consulta e edição do próprio perfil e troca de senha.
 
 ### Produtos
-- Listagem pública de produtos.
-- Criação, atualização e exclusão de produtos com acesso administrativo.
+- Listagem pública de produtos com busca por nome, filtro por categoria e ordenação.
+- Página de detalhes do produto e listagem de categorias.
+- Criação, atualização e exclusão de produtos com acesso administrativo (produtos que já têm pedidos não podem ser excluídos).
 - Integração com o Cloudinary para imagens de produtos.
 
 ### Pedidos e estoque
 - Criação de pedidos com um ou mais itens.
-- Validação da disponibilidade de estoque.
+- Validação da disponibilidade de estoque, com bloqueio da linha do produto durante a compra.
 - Cálculo do total do pedido.
 - Validação de transições de status.
 - Cancelamento com devolução do estoque, conforme as regras implementadas.
@@ -62,12 +66,13 @@ O projeto tem como objetivo aplicar conceitos de desenvolvimento backend, autent
 
 ## Frontend
 
-O frontend utiliza React e Vite e está em desenvolvimento. A estrutura atual inclui:
-- Página inicial que consulta produtos pela API.
-- Componente para exibição de produtos.
-- Componente de botão de favoritos.
-
-A interface ainda precisa evoluir para integrar os principais fluxos da loja, como autenticação, navegação de produtos, carrinho e finalização de pedidos.
+O frontend ("White Pony") utiliza React, React Router e Vite e consome a API. Telas disponíveis:
+- Vitrine com busca, filtro por categoria e ordenação.
+- Detalhes do produto com produtos relacionados.
+- Login e cadastro.
+- Carrinho e finalização do pedido.
+- Meus pedidos, perfil e configurações da conta.
+- Área administrativa para produtos (incluindo imagens) e status dos pedidos.
 
 ## Estrutura do projeto
 
@@ -92,8 +97,13 @@ A interface ainda precisa evoluir para integrar os principais fluxos da loja, co
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   └── pages/
+│   │   ├── context/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── styles/
 │   └── package.json
+├── docs/
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -166,7 +176,7 @@ CLOUDINARY_API_KEY=sua_api_key
 CLOUDINARY_API_SECRET=seu_api_secret
 ```
 
-Use credenciais próprias e não envie o arquivo `.env` para o GitHub.
+Use credenciais próprias e não envie o arquivo `.env` para o GitHub. A `SECRET_KEY` é obrigatória: sem ela a API não inicia.
 
 ### 4. Preparar o banco de dados
 
@@ -175,6 +185,8 @@ Com o PostgreSQL em execução e o banco indicado em `DB_NAME` criado, aplique a
 ```bash
 alembic upgrade head
 ```
+
+Repita esse comando sempre que atualizar o código, para aplicar migrações novas.
 
 ### 5. Iniciar a API
 
@@ -214,22 +226,33 @@ O Compose publica o PostgreSQL na porta `5433` do host e a API na porta `8001`. 
 
 ## Testes
 
-O repositório contém testes automatizados relacionados à autenticação, produtos, pedidos e estrutura da API. Para executá-los:
+O backend tem testes de autenticação, usuários, produtos, pedidos e estrutura da API. Eles usam um banco PostgreSQL separado, indicado em `DATABASE_URL_TESTE` (o nome deve terminar em `_test`):
 
 ```bash
 cd backend
 pytest
 ```
 
-A existência dos testes não garante que todos estejam passando. Configure as variáveis e o banco de testes conforme necessário e confira o resultado da execução.
+O frontend tem testes com Vitest e Testing Library:
+
+```bash
+cd frontend
+npm test
+npm run lint
+```
+
+## Documentação
+
+A pasta [`docs/`](docs/Home.md) reúne a documentação técnica: arquitetura, endpoints da API, modelo do banco, setup e decisões. Ela pode ser lida no GitHub ou aberta como vault no Obsidian.
 
 ## Próximas etapas
 
-- [ ] Executar a suíte de testes e corrigir eventuais falhas.
+- [x] Executar a suíte de testes e corrigir eventuais falhas.
+- [x] Completar a integração do frontend com os recursos da API.
+- [x] Desenvolver os fluxos de autenticação, carrinho e pedidos na interface.
 - [ ] Validar a inicialização da API e do PostgreSQL com Docker Compose.
-- [ ] Completar a integração do frontend com os recursos da API.
-- [ ] Desenvolver e validar os fluxos de autenticação, carrinho e pedidos na interface.
-- [ ] Revisar tratamento de erros, configurações e segurança.
+- [ ] Implementar recuperação de senha.
+- [ ] Continuar revisando tratamento de erros, configurações e segurança.
 - [ ] Adicionar capturas de tela da aplicação funcionando.
 - [ ] Configurar e validar uma demonstração publicada.
 - [ ] Atualizar a documentação conforme as funcionalidades forem concluídas.
