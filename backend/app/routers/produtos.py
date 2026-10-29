@@ -2,9 +2,10 @@ from datetime import datetime
 from typing import Literal
 
 import cloudinary.uploader
+from cloudinary.exceptions import Error as ErroCloudinary
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
 
 from app.dependencies import exigir_admin, get_db
@@ -132,10 +133,16 @@ def adicionar_imagem(
                 detail="Formato de imagem não permitido"
             )
 
-        resultado = cloudinary.uploader.upload(
-            imagem.file,
-            folder="ecommerce/produtos"
-        )
+        try:
+            resultado = cloudinary.uploader.upload(
+                imagem.file,
+                folder="ecommerce/produtos"
+            )
+        except ErroCloudinary:
+            raise HTTPException(
+                status_code=502,
+                detail="Não foi possível enviar a imagem. Tente novamente."
+            )
 
         produto.imagem_url = resultado["secure_url"]
 
@@ -211,6 +218,12 @@ def deletar_produtos(
         db.delete(deletar)
         db.commit()
         return {"mensagem": "Produto deletado com sucesso"}
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Produto possui pedidos e não pode ser excluído",
+        )
     except HTTPException:
         raise
     except OperationalError:

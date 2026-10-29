@@ -452,3 +452,31 @@ def test_listar_produtos_inclui_descricao(cliente, produto_com_descricao, produt
     por_nome = {item["name"]: item for item in resp.json()}
     assert por_nome["Camiseta Pony"]["descricao"] == "Algodao 100%.\nModelagem reta."
     assert por_nome["panela"]["descricao"] is None
+
+
+def test_admin_nao_pode_deletar_produto_com_pedido(cliente, headers_admin, pedido, db):
+    produto_id = pedido.itens[0].produto_id
+
+    resp = cliente.delete(f"/produtos/{produto_id}", headers=headers_admin)
+
+    assert resp.status_code == 409
+    assert db.query(Produto).filter(Produto.id == produto_id).count() == 1
+
+
+def test_falha_no_cloudinary_devolve_502(cliente, headers_admin, produto, db, monkeypatch):
+    from cloudinary.exceptions import Error as ErroCloudinary
+
+    def upload_com_falha(*args, **kwargs):
+        raise ErroCloudinary("indisponível")
+
+    monkeypatch.setattr("cloudinary.uploader.upload", upload_com_falha)
+
+    resp = cliente.post(
+        f"/produtos/{produto.id}/imagem",
+        headers=headers_admin,
+        files={"imagem": ("foto.png", b"conteudo", "image/png")},
+    )
+    db.refresh(produto)
+
+    assert resp.status_code == 502
+    assert produto.imagem_url is None
