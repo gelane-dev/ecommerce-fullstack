@@ -1,10 +1,8 @@
 import {
-    createContext,
     useState,
     useEffect,
 } from "react";
-
-export const ContextoCarrinho = createContext(null);
+import { ContextoCarrinho } from "./contextos";
 
 const CHAVE_CARRINHO = "@WhitePony:carrinho";
 

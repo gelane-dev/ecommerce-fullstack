@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ContextoCarrinho } from "../context/CartContext";
+import { ContextoCarrinho } from "../context/contextos";
 
 export function useCarrinho() {
 

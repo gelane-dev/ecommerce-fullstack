@@ -1,54 +1,48 @@
-import {
-    createContext,
-    useState,
-    useEffect,
-} from "react";
+import { useState } from "react";
+import { ContextoAutenticacao } from "./contextos";
 
-export const ContextoAutenticacao = createContext(null);
+// lido na criação do estado: a sessão já existe no primeiro render,
+// sem um efeito extra só para copiar o localStorage
+function carregarUsuarioSalvo() {
 
-export function ProvedorAutenticacao({ children }) {
+    const tokenSalvo = localStorage.getItem(
+        "@WhitePony:token"
+    );
 
-    const [usuario, setUsuario] = useState(null);
-    const [carregando, setCarregando] = useState(true);
+    const usuarioSalvo = localStorage.getItem(
+        "@WhitePony:usuario"
+    );
 
-    useEffect(() => {
+    if (!tokenSalvo || !usuarioSalvo) {
+        return null;
+    }
 
-        const tokenSalvo = localStorage.getItem(
+    try {
+
+        return JSON.parse(usuarioSalvo);
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar dados do usuário:",
+            erro
+        );
+
+        localStorage.removeItem(
             "@WhitePony:token"
         );
 
-        const usuarioSalvo = localStorage.getItem(
+        localStorage.removeItem(
             "@WhitePony:usuario"
         );
 
-        if (tokenSalvo && usuarioSalvo) {
+        return null;
+    }
+}
 
-            try {
+export function ProvedorAutenticacao({ children }) {
 
-                const dadosUsuario = JSON.parse(usuarioSalvo);
-
-                setUsuario(dadosUsuario);
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao carregar dados do usuário:",
-                    erro
-                );
-
-                localStorage.removeItem(
-                    "@WhitePony:token"
-                );
-
-                localStorage.removeItem(
-                    "@WhitePony:usuario"
-                );
-            }
-        }
-
-        setCarregando(false);
-
-    }, []);
+    const [usuario, setUsuario] = useState(carregarUsuarioSalvo);
 
     const entrar = (token, dadosUsuario) => {
 
@@ -96,7 +90,8 @@ export function ProvedorAutenticacao({ children }) {
             value={{
                 usuario,
                 estaAutenticado: !!usuario,
-                carregando,
+                // a sessão é lida de forma síncrona; mantido para quem já consome o campo
+                carregando: false,
                 entrar,
                 sair,
                 atualizarUsuario,
