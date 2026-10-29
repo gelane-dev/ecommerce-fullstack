@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class CriarProduto(BaseModel):
@@ -28,5 +28,4 @@ class ProdutoResponse(BaseModel):
     imagem_url: str | None = None
     descricao: str | None = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
