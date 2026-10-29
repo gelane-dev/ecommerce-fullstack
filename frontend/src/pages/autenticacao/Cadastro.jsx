@@ -32,7 +32,11 @@ export const Cadastro = () => {
 
             <header className="login-header">
 
-                <div className="login-marca">
+                <Link
+                    to="/"
+                    className="login-marca"
+                    aria-label="Voltar para a página inicial"
+                >
 
                     <img
                         src={imagemLogin}
@@ -42,7 +46,7 @@ export const Cadastro = () => {
 
                     <span>WHITE PONY</span>
 
-                </div>
+                </Link>
 
             </header>
 

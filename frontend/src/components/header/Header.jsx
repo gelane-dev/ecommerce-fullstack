@@ -42,6 +42,15 @@ const FormBusca = ({ valorInicial, aoBuscar }) => {
     );
 };
 
+const iniciaisDe = (nome = "") => {
+    const partes = nome.trim().split(/\s+/).filter(Boolean);
+
+    if (partes.length === 0) return "?";
+    if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+
+    return (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
+};
+
 export const Header = () => {
     const navigate = useNavigate();
     const [parametros] = useSearchParams();
@@ -91,10 +100,6 @@ export const Header = () => {
 
                 {estaAutenticado ? (
                     <>
-                        <Link to="/perfil" className="header-usuario">
-                            Olá, {usuario.nome}
-                        </Link>
-
                         {usuario.tipo === "admin" && (
                             <Link to="/admin">
                                 ADMIN
@@ -122,6 +127,27 @@ export const Header = () => {
                 <Link to="/carrinho">
                     SACOLA ({quantidadeTotal})
                 </Link>
+
+                {estaAutenticado && (
+                    <Link
+                        to="/perfil"
+                        className="header-avatar"
+                        title={usuario.nome}
+                        aria-label={`Meu perfil — ${usuario.nome}`}
+                    >
+                        {usuario.foto ? (
+                            <img
+                                src={usuario.foto}
+                                alt=""
+                                className="header-avatar-foto"
+                            />
+                        ) : (
+                            <span aria-hidden="true">
+                                {iniciaisDe(usuario.nome)}
+                            </span>
+                        )}
+                    </Link>
+                )}
             </nav>
 
         </header>

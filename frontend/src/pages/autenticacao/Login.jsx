@@ -32,7 +32,11 @@ export const Login = () => {
 
             <header className="login-header">
 
-                <div className="login-marca">
+                <Link
+                    to="/"
+                    className="login-marca"
+                    aria-label="Voltar para a página inicial"
+                >
 
                     <img
                         src={imagemLogin}
@@ -42,7 +46,7 @@ export const Login = () => {
 
                     <span>WHITE PONY</span>
 
-                </div>
+                </Link>
 
                 <div className="login-categorias">
 
@@ -141,19 +145,23 @@ export const Login = () => {
 
                         </button>
 
-                        <a
-                            href="#"
-                            className="login-esqueci"
-                        >
-                            ESQUECI MINHA SENHA
-                        </a>
+                        <div className="login-acoes">
 
-                        <Link
-                            to="/cadastro"
-                            className="login-esqueci"
-                        >
-                            CRIAR CONTA
-                        </Link>
+                            <a
+                                href="#"
+                                className="login-esqueci"
+                            >
+                                ESQUECI MINHA SENHA
+                            </a>
+
+                            <Link
+                                to="/cadastro"
+                                className="login-esqueci"
+                            >
+                                CRIAR CONTA
+                            </Link>
+
+                        </div>
 
                         {mensagem && (
                             <p className="login-mensagem">
