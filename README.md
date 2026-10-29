@@ -120,8 +120,8 @@ O frontend ("White Pony") utiliza React, React Router e Vite e consome a API. Te
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/gelane-dev/product-api-fastapi.git
-cd product-api-fastapi
+git clone https://github.com/gelane-dev/ecommerce-fullstack.git
+cd ecommerce-fullstack
 ```
 
 ### 2. Configurar o backend
@@ -274,7 +274,7 @@ Este projeto faz parte dos meus estudos em Análise e Desenvolvimento de Sistema
 **Leonardo Gelane dos Santos**
 
 - GitHub: https://github.com/gelane-dev
-- Repositório: https://github.com/gelane-dev/product-api-fastapi
+- Repositório: https://github.com/gelane-dev/ecommerce-fullstack
 
 Projeto desenvolvido para fins de aprendizado, prática e construção de portfólio.
 
