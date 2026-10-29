@@ -9,7 +9,12 @@ services:
     ports:
       - "5433:5432"
     volumes:
-    - postgres_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   api:
     build: .
@@ -25,11 +30,11 @@ services:
       CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
       CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
       CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
-    
     ports:
       - "8001:8000"
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
 volumes:
   postgres_data:
