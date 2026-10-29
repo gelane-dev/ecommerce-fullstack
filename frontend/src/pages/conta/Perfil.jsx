@@ -49,6 +49,9 @@ export const Perfil = () => {
                         <Link to="/pedidos" className="perfil-botao">
                             Meus pedidos
                         </Link>
+                        <Link to="/configuracoes" className="perfil-botao perfil-botao-claro">
+                            Configurações
+                        </Link>
                     </nav>
                 </>
             )}
