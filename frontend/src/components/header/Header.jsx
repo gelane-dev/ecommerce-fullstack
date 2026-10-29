@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import logoWhitePony from "../../assets/login-arte.png";
 import { useAutenticacao } from "../../hooks/useAutenticacao";
 import { useCarrinho } from "../../hooks/useCarrinho";
+import { iniciaisDe } from "../../utils/iniciaisDe";
 
 const FormBusca = ({ valorInicial, aoBuscar }) => {
     const [termo, setTermo] = useState(valorInicial);
@@ -40,15 +41,6 @@ const FormBusca = ({ valorInicial, aoBuscar }) => {
             />
         </form>
     );
-};
-
-const iniciaisDe = (nome = "") => {
-    const partes = nome.trim().split(/\s+/).filter(Boolean);
-
-    if (partes.length === 0) return "?";
-    if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
-
-    return (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
 };
 
 export const Header = () => {

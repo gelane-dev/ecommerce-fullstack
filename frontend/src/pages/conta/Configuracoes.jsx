@@ -6,6 +6,7 @@ import { useEnvio } from '../../hooks/useEnvio'
 import { useAutenticacao } from '../../hooks/useAutenticacao'
 import { usuariosService } from '../../services/usuariosService'
 import { Mensagem } from '../../components/comuns/Mensagem'
+import { iniciaisDe } from '../../utils/iniciaisDe'
 import './Configuracoes.css'
 
 const FormularioDados = ({ perfil }) => {
@@ -76,6 +77,66 @@ const FormularioDados = ({ perfil }) => {
                 </p>
             )}
         </form>
+    )
+}
+
+const FormularioFoto = ({ perfil }) => {
+    const { atualizarUsuario } = useAutenticacao()
+    const { enviar, carregando, mensagem } = useEnvio(
+        usuariosService.enviarFoto
+    )
+    const [foto, setFoto] = useState(perfil.foto)
+    const [sucesso, setSucesso] = useState('')
+
+    const aoEscolher = async (evento) => {
+        const arquivo = evento.target.files[0]
+        // limpa o input para o mesmo arquivo poder ser escolhido de novo
+        evento.target.value = ''
+
+        if (!arquivo) return
+
+        setSucesso('')
+
+        const { ok, resultado } = await enviar(arquivo)
+
+        if (ok) {
+            setFoto(resultado.foto)
+            atualizarUsuario({ foto: resultado.foto })
+            setSucesso('Foto atualizada.')
+        }
+    }
+
+    return (
+        <section className="config-formulario">
+            <h2>Foto de perfil</h2>
+
+            <div className="config-foto">
+                <span className="config-foto-avatar" aria-hidden="true">
+                    {foto ? (
+                        <img src={foto} alt="" />
+                    ) : (
+                        iniciaisDe(perfil.nome)
+                    )}
+                </span>
+
+                <label className="config-botao config-foto-botao">
+                    {carregando ? 'Enviando…' : foto ? 'Trocar foto' : 'Enviar foto'}
+                    <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={aoEscolher}
+                        disabled={carregando}
+                    />
+                </label>
+            </div>
+
+            <Mensagem texto={mensagem} />
+            {sucesso && (
+                <p className="config-sucesso" role="status">
+                    {sucesso}
+                </p>
+            )}
+        </section>
     )
 }
 
@@ -171,6 +232,7 @@ export const Configuracoes = () => {
                 </div>
             ) : (
                 <>
+                    <FormularioFoto perfil={perfil} />
                     <FormularioDados perfil={perfil} />
                     <FormularioSenha />
                 </>

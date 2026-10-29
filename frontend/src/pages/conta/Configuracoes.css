@@ -178,3 +178,60 @@
         text-align: center;
     }
 }
+
+.config-foto {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: var(--espaco-5);
+}
+
+.config-foto-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 88px;
+    height: 88px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    background-color: var(--cor-tinta);
+    color: var(--cor-papel);
+
+    font-size: var(--texto-lg);
+    font-weight: 800;
+    letter-spacing: var(--tracking-nav);
+}
+
+.config-foto-avatar img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.config-foto-botao {
+    position: relative;
+
+    cursor: pointer;
+}
+
+/* o input fica invisível sobre o botão, que continua acessível pelo teclado via label */
+.config-foto-botao input {
+    position: absolute;
+    inset: 0;
+
+    opacity: 0;
+    cursor: pointer;
+}
+
+.config-foto-botao:focus-within {
+    outline: 2px solid var(--cor-tinta);
+    outline-offset: 3px;
+}

@@ -17,4 +17,15 @@ export const usuariosService = {
             corpo: { senha_atual, senha_nova },
             autenticado: true,
         }),
+
+    enviarFoto: (arquivo) => {
+        const formulario = new FormData();
+        formulario.append("foto", arquivo);
+
+        return requisitar("/usuarios/me/foto", {
+            metodo: "POST",
+            corpo: formulario,
+            autenticado: true,
+        });
+    },
 };
