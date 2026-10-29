@@ -3,27 +3,38 @@ import { usuariosService } from "../services/usuariosService";
 
 export function usePerfil() {
 
-    const [perfil, setPerfil] = useState(null);
-    const [erro, setErro] = useState("");
-    const [carregando, setCarregando] = useState(true);
-
-    const carregar = useCallback(async () => {
-        setErro("");
-        setCarregando(true);
-
-        try {
-            setPerfil(await usuariosService.obterPerfil());
-        } catch (falha) {
-            setPerfil(null);
-            setErro(falha.message);
-        } finally {
-            setCarregando(false);
-        }
-    }, []);
+    // cada recarga incrementa a versão; enquanto a resposta da versão atual
+    // não chega, o perfil está carregando
+    const [versao, setVersao] = useState(0);
+    const [resultado, setResultado] = useState({
+        versao: -1,
+        perfil: null,
+        erro: "",
+    });
 
     useEffect(() => {
-        carregar();
-    }, [carregar]);
+        let ativo = true;
 
-    return { perfil, erro, carregando, carregar };
+        usuariosService
+            .obterPerfil()
+            .then((perfil) => ativo && setResultado({ versao, perfil, erro: "" }))
+            .catch((falha) =>
+                ativo && setResultado({ versao, perfil: null, erro: falha.message })
+            );
+
+        return () => {
+            ativo = false;
+        };
+    }, [versao]);
+
+    const carregar = useCallback(() => setVersao((atual) => atual + 1), []);
+
+    const carregando = resultado.versao !== versao;
+
+    return {
+        perfil: resultado.perfil,
+        erro: carregando ? "" : resultado.erro,
+        carregando,
+        carregar,
+    };
 }

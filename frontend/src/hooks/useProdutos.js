@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { produtosService } from "../services/produtosService";
 
 export function useCategorias() {
@@ -24,83 +24,87 @@ export function useCategorias() {
 
 export function useProduto(id) {
 
-    const [produto, setProduto] = useState(null);
-    const [erro, setErro] = useState("");
-    const [carregando, setCarregando] = useState(true);
+    // guarda de qual id é o resultado: se o id mudou e a resposta nova
+    // ainda não chegou, o produto está carregando
+    const [resultado, setResultado] = useState({
+        id: null,
+        produto: null,
+        erro: "",
+    });
 
     useEffect(() => {
         let ativo = true;
 
-        setProduto(null);
-        setErro("");
-        setCarregando(true);
-
         produtosService
             .buscar(id)
-            .then((dados) => ativo && setProduto(dados))
-            .catch((falha) => ativo && setErro(falha.message))
-            .finally(() => ativo && setCarregando(false));
+            .then((produto) => ativo && setResultado({ id, produto, erro: "" }))
+            .catch((falha) =>
+                ativo && setResultado({ id, produto: null, erro: falha.message })
+            );
 
         return () => {
             ativo = false;
         };
     }, [id]);
 
-    return { produto, erro, carregando };
+    const carregando = resultado.id !== id;
+
+    return {
+        produto: carregando ? null : resultado.produto,
+        erro: carregando ? "" : resultado.erro,
+        carregando,
+    };
 }
 
 export function useProdutos({ busca, categoria, ordenar } = {}) {
 
-    const [produtos, setProdutos] = useState([]);
-    const [erro, setErro] = useState("");
-    const [carregando, setCarregando] = useState(true);
+    // cada recarga incrementa a versão; junto com os filtros ela identifica
+    // a busca atual, e só a resposta dessa busca encerra o carregamento
+    const [versao, setVersao] = useState(0);
+    const chave = JSON.stringify([busca, categoria, ordenar, versao]);
 
-    // a requisição mais recente é a única que pode atualizar o estado
-    const ultimaRequisicao = useRef(0);
-
-    const carregar = useCallback(async () => {
-        const requisicao = ++ultimaRequisicao.current;
-
-        setErro("");
-        setCarregando(true);
-
-        try {
-            const lista = await produtosService.listar({
-                busca,
-                categoria,
-                ordenar,
-            });
-
-            if (requisicao !== ultimaRequisicao.current) return;
-
-            setProdutos(lista);
-        } catch (falha) {
-            if (requisicao !== ultimaRequisicao.current) return;
-
-            setProdutos([]);
-            setErro(falha.message);
-        } finally {
-            if (requisicao === ultimaRequisicao.current) {
-                setCarregando(false);
-            }
-        }
-    }, [busca, categoria, ordenar]);
+    const [resultado, setResultado] = useState({
+        chave: null,
+        produtos: [],
+        erro: "",
+    });
+    const [erroAcao, setErroAcao] = useState("");
 
     useEffect(() => {
-        carregar();
-    }, [carregar]);
+        let ativo = true;
 
-    // executa uma mudança, recarrega a lista e informa se deu certo
+        produtosService
+            .listar({ busca, categoria, ordenar })
+            .then((lista) =>
+                ativo && setResultado({ chave, produtos: lista, erro: "" })
+            )
+            .catch((falha) =>
+                ativo && setResultado({ chave, produtos: [], erro: falha.message })
+            );
+
+        return () => {
+            ativo = false;
+        };
+    }, [chave, busca, categoria, ordenar]);
+
+    const carregar = useCallback(() => {
+        setErroAcao("");
+        setVersao((atual) => atual + 1);
+    }, []);
+
+    const carregando = resultado.chave !== chave;
+
+    // executa uma mudança, pede a lista de novo e informa se deu certo
     const executar = async (acao) => {
-        setErro("");
+        setErroAcao("");
 
         try {
             await acao();
-            await carregar();
+            carregar();
 
             return true;
         } catch (falha) {
-            setErro(falha.message);
+            setErroAcao(falha.message);
 
             return false;
         }
@@ -120,8 +124,8 @@ export function useProdutos({ busca, categoria, ordenar } = {}) {
         executar(() => produtosService.enviarImagem(id, arquivo));
 
     return {
-        produtos,
-        erro,
+        produtos: resultado.produtos,
+        erro: erroAcao || (carregando ? "" : resultado.erro),
         carregando,
         carregar,
         salvar,
