@@ -4,7 +4,7 @@ Aplicação de e-commerce desenvolvida como projeto de estudo e portfólio, com 
 
 O projeto tem como objetivo aplicar conceitos de desenvolvimento backend, autenticação, autorização, modelagem de dados, regras de negócio, gerenciamento de estoque e integração entre frontend e backend.
 
-> **Status:** em desenvolvimento. O backend possui autenticação, perfil de usuário, produtos e pedidos implementados e cobertos por testes. O frontend integra catálogo, detalhes do produto, carrinho, pedidos, perfil e área administrativa. A execução com Docker Compose ainda precisa ser validada.
+> **Status:** em desenvolvimento. O backend possui autenticação, perfil de usuário, produtos e pedidos implementados e cobertos por testes. O frontend integra catálogo, detalhes do produto, carrinho, pedidos, perfil e área administrativa. Também pode ser executado com Docker Compose.
 
 ## Tecnologias
 
@@ -44,7 +44,7 @@ O projeto tem como objetivo aplicar conceitos de desenvolvimento backend, autent
 - Senhas armazenadas com hash.
 - Diferenciação de permissões entre usuários e administradores.
 - Proteção de operações administrativas.
-- Consulta e edição do próprio perfil e troca de senha.
+- Consulta e edição do próprio perfil, foto de perfil e troca de senha.
 
 ### Produtos
 - Listagem pública de produtos com busca por nome, filtro por categoria e ordenação.
@@ -71,7 +71,7 @@ O frontend ("White Pony") utiliza React, React Router e Vite e consome a API. Te
 - Detalhes do produto com produtos relacionados.
 - Login e cadastro.
 - Carrinho e finalização do pedido.
-- Meus pedidos, perfil e configurações da conta.
+- Meus pedidos, perfil e configurações da conta (dados, foto e senha).
 - Área administrativa para produtos (incluindo imagens) e status dos pedidos.
 
 ## Estrutura do projeto
@@ -222,7 +222,7 @@ cd backend
 docker compose up --build
 ```
 
-O Compose publica o PostgreSQL na porta `5433` do host e a API na porta `8001`. A execução completa ainda precisa ser validada no ambiente local.
+O Compose publica o PostgreSQL na porta `5433` do host e a API na porta `8001`. O container da API aplica as migrações automaticamente ao iniciar e só sobe depois que o banco estiver pronto. Se a API já estiver rodando localmente na porta `8001`, pare-a antes.
 
 ## Testes
 
@@ -250,7 +250,7 @@ A pasta [`docs/`](docs/Home.md) reúne a documentação técnica: arquitetura, e
 - [x] Executar a suíte de testes e corrigir eventuais falhas.
 - [x] Completar a integração do frontend com os recursos da API.
 - [x] Desenvolver os fluxos de autenticação, carrinho e pedidos na interface.
-- [ ] Validar a inicialização da API e do PostgreSQL com Docker Compose.
+- [x] Validar a inicialização da API e do PostgreSQL com Docker Compose.
 - [ ] Implementar recuperação de senha.
 - [ ] Continuar revisando tratamento de erros, configurações e segurança.
 - [ ] Adicionar capturas de tela da aplicação funcionando.

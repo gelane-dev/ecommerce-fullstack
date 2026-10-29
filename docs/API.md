@@ -17,7 +17,7 @@ Legenda: 🌐 público · 🔑 usuário autenticado · 🛡️ admin
 
 | Método | Rota | Acesso | Corpo | Resposta |
 |--------|------|--------|-------|----------|
-| POST | `/login/` | 🌐 | `{email, senha}` | `{access_token, token_type: "bearer", usuario: {id, nome, email, tipo}}`; 401 credenciais inválidas |
+| POST | `/login/` | 🌐 | `{email, senha}` | `{access_token, token_type: "bearer", usuario: {id, nome, email, tipo, foto}}`; 401 credenciais inválidas |
 | POST | `/cadastro/` | 🌐 | `{name (3–100), email, senha (≥6)}` | 201 `{mensagem}`; 409 e-mail já cadastrado |
 
 ## Produtos (`routers/produtos.py`)
@@ -29,7 +29,7 @@ Legenda: 🌐 público · 🔑 usuário autenticado · 🛡️ admin
 | GET | `/produtos/{id}` | 🌐 | Produto; 404 se não existe |
 | POST | `/produtos/` | 🛡️ | `{name, categoria, preco, estoque, descricao?}`; 201; 400 se preço/estoque < 0 |
 | POST | `/produtos/{id}/imagem` | 🛡️ | `multipart/form-data`, campo `imagem` (jpeg/png/webp); envia ao Cloudinary e grava `imagem_url`; 400 formato; 404; 502 se o Cloudinary falhar |
-| PUT | `/produtos/{id}` | 🛡️ | Campos opcionais; 400 se estoque > 1000, estoque < 0 ou preço < 0; 404 |
+| PUT | `/produtos/{id}` | 🛡️ | Campos opcionais; 400 se estoque < 0 ou preço < 0 (sem limite máximo de estoque, igual ao POST); 404 |
 | DELETE | `/produtos/{id}` | 🛡️ | 404 se não existe; 409 se o produto já aparece em pedidos |
 
 Produto retornado: `id, name, categoria, preco, estoque, imagem_url, descricao, data_criacao`.
@@ -49,9 +49,10 @@ Pedido serializado: `{id, total, status, data_criacao, cliente: {nome, email}, i
 
 | Método | Rota | Acesso | Detalhes |
 |--------|------|--------|----------|
-| GET | `/usuarios/me` | 🔑 | `{id, nome, email, tipo, data_criacao}` |
+| GET | `/usuarios/me` | 🔑 | `{id, nome, email, tipo, foto, data_criacao}` (`foto` é URL ou `null`) |
 | PUT | `/usuarios/me` | 🔑 | `{nome?, email?}` (lista branca; `role` nunca é alterado); 409 e-mail em uso |
 | PUT | `/usuarios/me/senha` | 🔑 | `{senha_atual, senha_nova (≥6)}`; 401 senha atual errada; 400 se igual à atual |
+| POST | `/usuarios/me/foto` | 🔑 | `multipart/form-data`, campo `foto` (jpeg/png/webp); envia ao Cloudinary e devolve o perfil atualizado; 400 formato; 502 se o Cloudinary falhar |
 
 ## Exemplo
 

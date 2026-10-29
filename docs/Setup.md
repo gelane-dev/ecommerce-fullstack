@@ -62,4 +62,4 @@ cd backend
 docker compose up --build   # Postgres no host :5433, API no host :8001
 ```
 
-Execução: **Not verified**. As migrações não rodam automaticamente no container (**Not verified** como o schema é criado nesse cenário).
+O container da API aplica `alembic upgrade head` ao iniciar e espera o Postgres ficar saudável. O banco do Compose usa o volume `backend_postgres_data`, separado do Postgres local. A API do Compose usa a porta 8001, então pare o uvicorn local antes.

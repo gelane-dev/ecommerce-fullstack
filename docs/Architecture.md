@@ -19,16 +19,16 @@ flowchart LR
 | `core/config.py` | Lê variáveis de ambiente (`python-dotenv`), exige `SECRET_KEY` e monta `DATABASE_URL` |
 | `core/database.py` | `engine`, `SessionLocal`, `Base` (DeclarativeBase) |
 | `core/security.py` | Hash/verificação de senha (bcrypt) e criação/decodificação de JWT (expira em 60 min) |
-| `core/cloudinary.py` | Chama `cloudinary.config(...)`, mas não é importado por nenhum módulo; na prática o SDK lê as variáveis `CLOUDINARY_*` do ambiente sozinho |
 | `dependencies.py` | `get_db`, `obter_usuario_atual` (HTTPBearer), `exigir_admin` |
 | `models/` | Modelos ORM: `Usuario`, `Produto`, `Pedido`, `ItemPedido`, enum `StatusPedido` |
 | `schemas/` | Schemas Pydantic de entrada (produto, usuário, pedido) |
 | `routers/` | `auth`, `produtos`, `pedidos`, `usuarios` — ver [API](API.md) |
 | `services/pedido_service.py` | Regras de pedido: estoque, total, transições de status, devolução de estoque no cancelamento |
+| `services/imagem_service.py` | Valida o formato (jpeg/png/webp) e envia imagens ao Cloudinary; usado por produtos e pela foto de perfil. O SDK lê `CLOUDINARY_*` do ambiente |
 
 Padrões observados:
 - Routers tratam `OperationalError` com `rollback` e respondem 500; erros de negócio usam `HTTPException`. `IntegrityError` é convertido em 409 onde há conflito esperado (e-mail duplicado, exclusão de produto com pedidos).
-- Somente pedidos têm camada de serviço; produtos e usuários têm a lógica no router.
+- Pedidos e envio de imagens têm camada de serviço; o restante da lógica de produtos e usuários fica no router.
 - Respostas são `dict` ou objetos ORM; não há `response_model` declarado nos routers (`ProdutoResponse` existe em `schemas/produto.py` mas não é usado).
 
 ### Regras de pedido
@@ -66,11 +66,11 @@ Rotas da SPA: `/`, `/login`, `/cadastro`, `/produto/:id`, `/carrinho`, `/pedidos
 
 ## Infraestrutura
 
-- `backend/Dockerfile`: Python 3.13-slim, `uvicorn` na porta 8000.
-- `backend/docker-compose.yml`: serviço `database` (postgres:18-alpine, host `5433`) e `api` (host `8001`). Execução completa: **Not verified**.
+- `backend/Dockerfile`: Python 3.13-slim; ao iniciar roda `alembic upgrade head` e depois `uvicorn` na porta 8000.
+- `backend/docker-compose.yml`: serviço `database` (postgres:18-alpine, host `5433`, healthcheck `pg_isready`) e `api` (host `8001`), que só inicia com o banco saudável. Validado em 2026-10-29.
 - Sem CI configurado no repositório (nenhum workflow encontrado).
 
 ## Testes
 
 - Backend: `backend/tests` — `conftest.py` exige `DATABASE_URL_TESTE` terminando em `_test` e faz `create_all`/`drop_all` por teste em Postgres real. Arquivos: `test_auth`, `test_produtos`, `test_pedidos`, `test_usuarios`, `test_estrutura`.
-- Frontend: Vitest + Testing Library + jsdom (`vite.config.js`, `src/test/setup.js`); testes em `pages/produto/Produto.test.jsx` e `hooks/hooks.test.jsx`. `npm run lint` deve passar sem erros.
+- Frontend: Vitest + Testing Library + jsdom (`vite.config.js`, `src/test/setup.js`); testes em `pages/produto/Produto.test.jsx`, `pages/conta/Configuracoes.test.jsx` e `hooks/hooks.test.jsx`. `npm run lint` deve passar sem erros.

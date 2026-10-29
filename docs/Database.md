@@ -18,6 +18,7 @@ erDiagram
     varchar100 name
     varchar email "UNIQUE, nullable"
     varchar100 senha "hash bcrypt"
+    varchar500 foto_url "nullable"
     datetime data_criacao
   }
   produto {
@@ -63,7 +64,8 @@ Cadeia linear, `env.py` usa `DATABASE_URL` de `app.core.config` e `Base.metadata
 |---------|-----------|
 | `26dc11b4a7ed` | Criação inicial: `produto`, `usuarios`, `pedidos`, `itens_pedidos` |
 | `e348e7211928` | Adiciona `produto.imagem_url` |
-| `a7c3f1d92b44` (head) | Adiciona `produto.descricao` |
+| `a7c3f1d92b44` | Adiciona `produto.descricao` |
+| `c4e9b2a7d158` (head) | Adiciona `usuarios.foto_url` |
 
 Comandos (em `backend/`): `alembic upgrade head`, `alembic revision --autogenerate -m "<descricao>"`.
 
