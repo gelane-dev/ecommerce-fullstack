@@ -198,3 +198,39 @@ def test_admin_alterar_status_pedido_inexistente(cliente, headers_admin):
 
     assert resp_status.status_code == 404
 
+
+
+def test_produto_repetido_no_pedido_soma_quantidades_no_estoque(cliente, headers_cliente, produto, db):
+    resp = cliente.post("/pedidos/",
+    headers=headers_cliente,
+    json={
+        "itens":[
+            {"produto_id": produto.id, "quantidade": 6},
+            {"produto_id": produto.id, "quantidade": 6},
+        ]
+    },
+)
+    db.refresh(produto)
+
+    assert resp.status_code == 400
+    assert produto.estoque == 10
+    assert db.query(ItemPedido).count() == 0
+
+
+def test_produto_repetido_no_pedido_vira_um_item(cliente, headers_cliente, produto, db):
+    resp = cliente.post("/pedidos/",
+    headers=headers_cliente,
+    json={
+        "itens":[
+            {"produto_id": produto.id, "quantidade": 2},
+            {"produto_id": produto.id, "quantidade": 3},
+        ]
+    },
+)
+    item = db.query(ItemPedido).one()
+    db.refresh(produto)
+
+    assert resp.status_code == 201
+    assert item.quantidade == 5
+    assert produto.estoque == 5
+    assert resp.json()["total"] == 500

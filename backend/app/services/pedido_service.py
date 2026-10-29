@@ -13,18 +13,27 @@ TRANSICOES_VALIDAS = {
 
 
 def criar_pedido(db: Session, usuario_id: int, dados: CriarPedido) -> dict:
-    itens_calculados = []
+    # o mesmo produto repetido na lista vira um item só; senão cada linha passaria
+    # na checagem de estoque isoladamente e a soma poderia deixar o estoque negativo
+    quantidades: dict[int, int] = {}
     for item in dados.itens:
-        produto_db = db.query(Produto).filter(Produto.id == item.produto_id).first()
+        quantidades[item.produto_id] = quantidades.get(item.produto_id, 0) + item.quantidade
+
+    itens_calculados = []
+    for produto_id, quantidade in quantidades.items():
+        # with_for_update trava a linha até o commit para pedidos simultâneos não venderem o mesmo estoque
+        produto_db = (
+            db.query(Produto).filter(Produto.id == produto_id).with_for_update().first()
+        )
         if produto_db is None:
             raise HTTPException(status_code=404, detail="produto não encontrado")
-        if produto_db.estoque < item.quantidade:
+        if produto_db.estoque < quantidade:
             raise HTTPException(status_code=400, detail="estoque menor que quantidade pedida")
-        valor = produto_db.preco * item.quantidade
+        valor = produto_db.preco * quantidade
         itens_calculados.append(
             {
                 "produto": produto_db,
-                "quantidade": item.quantidade,
+                "quantidade": quantidade,
                 "preco": produto_db.preco,
                 "valor": valor,
             }
