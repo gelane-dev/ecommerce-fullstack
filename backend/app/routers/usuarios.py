@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
@@ -7,6 +7,7 @@ from app.core.security import hash_senha, verificar_senha
 from app.dependencies import get_db, obter_usuario_atual
 from app.models import Usuario
 from app.schemas import AlterarSenha, AtualizarUsuario
+from app.services.imagem_service import enviar_imagem
 
 router = APIRouter(prefix="/usuarios", tags=["Usuários"])
 
@@ -24,6 +25,7 @@ def _dados_usuario(usuario: Usuario) -> dict:
         "nome": usuario.name,
         "email": usuario.email,
         "tipo": usuario.role,
+        "foto": usuario.foto_url,
         "data_criacao": usuario.data_criacao,
     }
 
@@ -99,3 +101,23 @@ def alterar_minha_senha(
     except OperationalError:
         db.rollback()
         raise HTTPException(status_code=500, detail="Erro ao alterar senha no banco de dados")
+
+
+@router.post("/me/foto")
+def enviar_minha_foto(
+    foto: UploadFile = File(...),
+    usuario_token: dict = Depends(obter_usuario_atual),
+    db: Session = Depends(get_db),
+):
+    try:
+        usuario = _buscar_usuario(db, usuario_token)
+
+        usuario.foto_url = enviar_imagem(foto, "ecommerce/usuarios")
+        db.commit()
+        db.refresh(usuario)
+        return _dados_usuario(usuario)
+    except HTTPException:
+        raise
+    except OperationalError:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Erro ao salvar foto no banco de dados")

@@ -44,7 +44,7 @@ def test_modelos_preservam_tabelas_e_colunas():
             "descricao",
             "data_criacao",
         },
-        "usuarios": {"id", "role", "name", "email", "senha", "data_criacao"},
+        "usuarios": {"id", "role", "name", "email", "senha", "foto_url", "data_criacao"},
         "pedidos": {"id", "usuario_id", "total", "status", "data_criacao"},
         "itens_pedidos": {
             "id",
@@ -78,4 +78,5 @@ def test_openapi_mantem_tags_e_caminhos():
         "/pedidos/{id}/status",
         "/usuarios/me",
         "/usuarios/me/senha",
+        "/usuarios/me/foto",
     }

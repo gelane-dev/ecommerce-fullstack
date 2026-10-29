@@ -258,3 +258,79 @@ def test_atualizar_com_nome_e_email_nulos_nao_altera_nada(
     assert resp.status_code == 200
     assert usuario_cliente.name == "leonardo"
     assert usuario_cliente.email == "leo@gmail.com"
+
+
+def _upload_falso(url):
+    def upload(*args, **kwargs):
+        return {"secure_url": url}
+    return upload
+
+
+def test_perfil_sem_foto_devolve_null(cliente, headers_cliente):
+    resp = cliente.get("/usuarios/me", headers=headers_cliente)
+
+    assert resp.json()["foto"] is None
+
+
+def test_enviar_foto_salva_url_e_devolve_perfil(cliente, headers_cliente, usuario_cliente, db, monkeypatch):
+    monkeypatch.setattr("cloudinary.uploader.upload", _upload_falso("https://exemplo.com/leo.png"))
+
+    resp = cliente.post(
+        "/usuarios/me/foto",
+        headers=headers_cliente,
+        files={"foto": ("leo.png", b"conteudo", "image/png")},
+    )
+    db.refresh(usuario_cliente)
+
+    assert resp.status_code == 200
+    assert resp.json()["foto"] == "https://exemplo.com/leo.png"
+    assert usuario_cliente.foto_url == "https://exemplo.com/leo.png"
+
+
+def test_login_devolve_foto_salva(cliente, usuario_cliente, db):
+    usuario_cliente.foto_url = "https://exemplo.com/leo.png"
+    db.commit()
+
+    resp = _login(cliente, "leo@gmail.com", "senha123")
+
+    assert resp.json()["usuario"]["foto"] == "https://exemplo.com/leo.png"
+
+
+def test_enviar_foto_com_formato_invalido_devolve_400(cliente, headers_cliente, usuario_cliente, db):
+    resp = cliente.post(
+        "/usuarios/me/foto",
+        headers=headers_cliente,
+        files={"foto": ("leo.gif", b"conteudo", "image/gif")},
+    )
+    db.refresh(usuario_cliente)
+
+    assert resp.status_code == 400
+    assert usuario_cliente.foto_url is None
+
+
+def test_enviar_foto_com_falha_no_cloudinary_devolve_502(cliente, headers_cliente, usuario_cliente, db, monkeypatch):
+    from cloudinary.exceptions import Error as ErroCloudinary
+
+    def upload_com_falha(*args, **kwargs):
+        raise ErroCloudinary("indisponível")
+
+    monkeypatch.setattr("cloudinary.uploader.upload", upload_com_falha)
+
+    resp = cliente.post(
+        "/usuarios/me/foto",
+        headers=headers_cliente,
+        files={"foto": ("leo.png", b"conteudo", "image/png")},
+    )
+    db.refresh(usuario_cliente)
+
+    assert resp.status_code == 502
+    assert usuario_cliente.foto_url is None
+
+
+def test_enviar_foto_sem_token_e_negado(cliente):
+    resp = cliente.post(
+        "/usuarios/me/foto",
+        files={"foto": ("leo.png", b"conteudo", "image/png")},
+    )
+
+    assert resp.status_code == 401

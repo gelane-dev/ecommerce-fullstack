@@ -165,7 +165,7 @@ def test_login_mantem_chaves_de_primeiro_nivel(cliente, usuario_cliente):
 def test_login_mantem_chaves_do_usuario(cliente, usuario_cliente):
     resp = cliente.post("/login/", json={"email": "leo@gmail.com", "senha": "senha123"})
 
-    assert set(resp.json()["usuario"]) == {"id", "nome", "email", "tipo"}
+    assert set(resp.json()["usuario"]) == {"id", "nome", "email", "tipo", "foto"}
 
 
 def test_login_cliente_devolve_id_nome_e_tipo(cliente, usuario_cliente):

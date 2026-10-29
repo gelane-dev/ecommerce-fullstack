@@ -14,6 +14,7 @@ class Usuario(Base):
     name: Mapped[str] = mapped_column(String(100))
     email: Mapped[str | None] = mapped_column(unique=True)
     senha: Mapped[str] = mapped_column(String(100))
+    foto_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     data_criacao: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.now, nullable=False
     )
