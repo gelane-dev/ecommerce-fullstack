@@ -6,6 +6,18 @@ O projeto tem como objetivo aplicar conceitos de desenvolvimento backend, autent
 
 > **Status:** em desenvolvimento. O backend possui autenticação, perfil de usuário, produtos e pedidos implementados e cobertos por testes. O frontend integra catálogo, detalhes do produto, carrinho, pedidos, perfil e área administrativa. Também pode ser executado com Docker Compose.
 
+## A história do projeto
+
+Este projeto começou como uma forma de aprender, na prática, como se desenvolve um e-commerce. No início, construí tudo à mão: escrevi cada parte do código, errei, corrigi e aprendi com cada acerto e cada erro. A base do backend — API, autenticação, regras de pedidos e banco de dados — foi construída nessa fase.
+
+Ao longo de 2026, porém, ficou claro que a rotina de quem desenvolve software estava mudando drasticamente. A inteligência artificial passou a acelerar a produção de código, facilitar o trabalho e melhorar o que é entregue. Decidi, então, trazer essa mudança para dentro do projeto, com o objetivo de aprender mais sobre IA e, principalmente, sobre orquestração de agentes.
+
+Boa parte do frontend foi desenvolvida com IA, especificamente com o [Claude Code](https://claude.com/claude-code), que também usei para revisar o código, corrigir problemas e escrever a documentação. O resultado me surpreendeu: com agentes bem coordenados — um planejando, outro implementando, outro revisando e testando — é possível ter algo próximo de uma equipe completa trabalhando no projeto e entregar, em pouco tempo, o que levaria muito mais sozinho. Meu papel passou a ser cada vez mais o de definir o que construir, revisar e tomar as decisões.
+
+Essa experiência me convenceu de que saber trabalhar com IA e orquestrar agentes já faz parte da profissão, e quem não estiver aprendendo isso tende a ficar para trás.
+
+Este é o resultado do projeto até hoje. Ainda há pontos a melhorar (veja as [próximas etapas](#próximas-etapas)), e ele continua evoluindo.
+
 ## Tecnologias
 
 ### Backend
@@ -268,6 +280,7 @@ Este projeto faz parte dos meus estudos em Análise e Desenvolvimento de Sistema
 - Testes automatizados.
 - Integração entre frontend e backend.
 - Containerização com Docker.
+- Desenvolvimento com IA e orquestração de agentes.
 
 ## Autor
 
