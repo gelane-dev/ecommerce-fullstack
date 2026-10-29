@@ -147,13 +147,6 @@ export const Login = () => {
 
                         <div className="login-acoes">
 
-                            <a
-                                href="#"
-                                className="login-esqueci"
-                            >
-                                ESQUECI MINHA SENHA
-                            </a>
-
                             <Link
                                 to="/cadastro"
                                 className="login-esqueci"
