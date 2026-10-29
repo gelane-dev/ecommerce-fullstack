@@ -1,9 +1,6 @@
 from datetime import datetime
 from typing import Literal
 
-import cloudinary.uploader
-from cloudinary.exceptions import Error as ErroCloudinary
-
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
@@ -11,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.dependencies import exigir_admin, get_db
 from app.models import Produto
 from app.schemas import AtualizarProduto, CriarProduto
+from app.services.imagem_service import enviar_imagem
 
 router = APIRouter(prefix="/produtos", tags=["Produtos"])
 
@@ -121,30 +119,7 @@ def adicionar_imagem(
                 detail="Produto não encontrado"
             )
 
-        tipos_permitidos = {
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-        }
-
-        if imagem.content_type not in tipos_permitidos:
-            raise HTTPException(
-                status_code=400,
-                detail="Formato de imagem não permitido"
-            )
-
-        try:
-            resultado = cloudinary.uploader.upload(
-                imagem.file,
-                folder="ecommerce/produtos"
-            )
-        except ErroCloudinary:
-            raise HTTPException(
-                status_code=502,
-                detail="Não foi possível enviar a imagem. Tente novamente."
-            )
-
-        produto.imagem_url = resultado["secure_url"]
+        produto.imagem_url = enviar_imagem(imagem, "ecommerce/produtos")
 
         db.add(produto)
         db.commit()
