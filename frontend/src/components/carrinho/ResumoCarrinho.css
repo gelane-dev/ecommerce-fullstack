@@ -36,3 +36,21 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+@media (max-width: 600px) {
+    .resumo-carrinho {
+        align-items: stretch;
+
+        margin-top: 24px;
+        gap: 12px;
+    }
+
+    .resumo-carrinho-total {
+        justify-content: space-between;
+    }
+
+    .resumo-carrinho-finalizar {
+        width: 100%;
+        padding: 16px;
+    }
+}

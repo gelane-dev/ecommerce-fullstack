@@ -156,3 +156,25 @@
     font-size: var(--texto-base);
     letter-spacing: var(--tracking-mono);
 }
+
+@media (max-width: 600px) {
+    .config {
+        padding: 32px 16px;
+    }
+
+    .config-titulo {
+        font-size: 26px;
+    }
+
+    .config-formulario {
+        margin-bottom: var(--espaco-6);
+        padding-bottom: var(--espaco-5);
+    }
+}
+
+@media (max-width: 480px) {
+    .config-botao {
+        width: 100%;
+        text-align: center;
+    }
+}

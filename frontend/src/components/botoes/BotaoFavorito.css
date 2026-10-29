@@ -20,3 +20,19 @@
 .icone-favorito {
   font-size: 1.1rem;
 }
+
+@media (max-width: 480px) {
+  .botao-favoritar {
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+    padding: 0;
+
+    border-radius: 50%;
+  }
+
+  .texto-favorito {
+    display: none;
+  }
+}

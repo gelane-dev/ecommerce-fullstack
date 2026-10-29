@@ -88,4 +88,19 @@
     .home {
         padding: var(--espaco-5) var(--espaco-4);
     }
+
+    .home-titulo {
+        margin-bottom: var(--espaco-4);
+    }
+
+    .card-container {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+        gap: var(--espaco-4);
+    }
+}
+
+@media (max-width: 420px) {
+    .home {
+        padding: var(--espaco-4) var(--espaco-3);
+    }
 }

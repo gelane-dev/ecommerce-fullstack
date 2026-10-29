@@ -40,3 +40,11 @@
     /* layout */
     --altura-header: 76px;
 }
+
+@media (max-width: 700px) {
+    :root {
+        --espaco-6: 24px;
+        --espaco-7: 40px;
+        --texto-xl: 28px;
+    }
+}

@@ -118,3 +118,14 @@
     right: var(--espaco-3);
     z-index: 10;
 }
+
+@media (max-width: 480px) {
+    .card-conteudo {
+        padding: var(--espaco-3);
+    }
+
+    .card-favorito-posicionador {
+        top: var(--espaco-2);
+        right: var(--espaco-2);
+    }
+}

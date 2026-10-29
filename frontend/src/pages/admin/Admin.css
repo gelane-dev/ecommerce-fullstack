@@ -21,8 +21,21 @@
     letter-spacing: 0.16em;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 600px) {
     .admin {
-        overflow-x: auto;
+        padding: 28px 16px;
+    }
+
+    .admin h1 {
+        margin-bottom: 24px;
+
+        font-size: 22px;
+        letter-spacing: 0.08em;
+    }
+
+    .admin h2 {
+        margin: 32px 0 12px;
+
+        font-size: 12px;
     }
 }

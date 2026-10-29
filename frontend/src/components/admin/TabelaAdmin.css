@@ -1,5 +1,13 @@
+.tabela-admin-scroll {
+    width: 100%;
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
 .tabela-admin {
     width: 100%;
+    min-width: 720px;
 
     border-collapse: collapse;
     font-size: 13px;
@@ -43,4 +51,16 @@
 
 .tabela-admin-excluir {
     color: #B00020;
+}
+
+.tabela-admin select {
+    max-width: 100%;
+    min-height: 32px;
+}
+
+@media (max-width: 700px) {
+    .tabela-admin th,
+    .tabela-admin td {
+        padding: 8px 6px;
+    }
 }

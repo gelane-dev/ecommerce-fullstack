@@ -24,3 +24,16 @@
 
     list-style: none;
 }
+
+@media (max-width: 600px) {
+    .pedidos {
+        padding: 28px 16px;
+    }
+
+    .pedidos h1 {
+        margin-bottom: 24px;
+
+        font-size: 22px;
+        letter-spacing: 0.08em;
+    }
+}

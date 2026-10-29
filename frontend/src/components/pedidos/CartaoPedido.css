@@ -29,3 +29,27 @@
 .cartao-pedido-total {
     align-self: flex-end;
 }
+
+@media (max-width: 480px) {
+    .cartao-pedido {
+        padding: 16px;
+    }
+
+    .cartao-pedido-cabecalho {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+
+        gap: 8px;
+    }
+
+    .cartao-pedido-itens {
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .cartao-pedido-total {
+        align-self: stretch;
+
+        text-align: right;
+    }
+}

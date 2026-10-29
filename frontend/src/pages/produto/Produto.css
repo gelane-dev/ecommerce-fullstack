@@ -372,3 +372,41 @@
         position: static;
     }
 }
+
+@media (max-width: 600px) {
+    .produto {
+        padding: var(--espaco-4);
+    }
+
+    .produto-breadcrumb {
+        margin-bottom: var(--espaco-4);
+    }
+
+    .produto-compra {
+        padding: var(--espaco-4);
+        gap: var(--espaco-3);
+    }
+
+    .produto-nome {
+        font-size: 26px;
+    }
+
+    .produto-preco {
+        font-size: 26px;
+    }
+
+    .produto-secao {
+        margin-top: var(--espaco-6);
+        padding-top: var(--espaco-4);
+    }
+
+    .produto-relacionados {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+        gap: var(--espaco-4);
+    }
+
+    .produto-quantidade button {
+        width: 40px;
+        min-height: 40px;
+    }
+}

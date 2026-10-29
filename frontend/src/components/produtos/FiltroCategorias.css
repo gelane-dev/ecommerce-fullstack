@@ -42,3 +42,18 @@
     outline: 2px solid var(--cor-tinta);
     outline-offset: 2px;
 }
+
+@media (max-width: 600px) {
+    .filtro {
+        gap: var(--espaco-4);
+    }
+
+    .filtro-campo {
+        flex: 1 1 100%;
+    }
+
+    .filtro-campo select {
+        width: 100%;
+        min-width: 0;
+    }
+}

@@ -19,6 +19,9 @@
 
 .formulario-produto input,
 .formulario-produto textarea {
+    width: 100%;
+    min-width: 0;
+
     padding: 10px 12px;
 
     border: 1px solid #0B0B0B;
@@ -62,5 +65,22 @@
 @media (max-width: 800px) {
     .formulario-produto {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .formulario-produto {
+        padding: 16px;
+    }
+
+    .formulario-produto-acoes {
+        flex-wrap: wrap;
+    }
+
+    .formulario-produto-salvar,
+    .formulario-produto-cancelar {
+        flex: 1 1 auto;
+
+        padding: 12px 16px;
     }
 }

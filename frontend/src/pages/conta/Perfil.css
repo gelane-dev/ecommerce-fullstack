@@ -65,6 +65,7 @@
     margin: 0;
 
     font-size: var(--texto-md);
+    overflow-wrap: anywhere;
 }
 
 .perfil-acoes {
@@ -108,4 +109,29 @@
 .perfil-botao:focus-visible {
     outline: 2px solid var(--cor-tinta);
     outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .perfil {
+        padding: 32px 16px;
+    }
+
+    .perfil-titulo {
+        margin-bottom: var(--espaco-4);
+
+        font-size: 26px;
+    }
+
+    .perfil-dados {
+        margin-bottom: var(--espaco-5);
+    }
+
+    .perfil-acoes {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .perfil-botao {
+        text-align: center;
+    }
 }

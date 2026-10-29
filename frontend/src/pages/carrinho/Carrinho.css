@@ -30,3 +30,16 @@
 
     list-style: none;
 }
+
+@media (max-width: 600px) {
+    .carrinho {
+        padding: 28px 16px;
+    }
+
+    .carrinho h1 {
+        margin-bottom: 24px;
+
+        font-size: 24px;
+        letter-spacing: 0.1em;
+    }
+}

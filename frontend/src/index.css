@@ -5,6 +5,10 @@
     box-sizing: border-box;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
 html,
 body,
 #root {
@@ -13,7 +17,14 @@ body,
 }
 
 body {
+    min-height: 100vh;
+
     font-family: var(--fonte-base);
     color: var(--cor-tinta);
     background-color: var(--cor-papel);
+}
+
+img,
+svg {
+    max-width: 100%;
 }
