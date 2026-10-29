@@ -1,0 +1,5 @@
+# estado local do Obsidian (por usuário/máquina)
+workspace.json
+workspace-mobile.json
+plugins/
+themes/
