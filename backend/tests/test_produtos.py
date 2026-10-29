@@ -480,3 +480,33 @@ def test_falha_no_cloudinary_devolve_502(cliente, headers_admin, produto, db, mo
 
     assert resp.status_code == 502
     assert produto.imagem_url is None
+
+
+def test_estoque_alto_e_aceito_ao_criar_e_ao_atualizar(cliente, headers_admin, produto, db):
+    resp_criar = cliente.post(
+        "/produtos/",
+        headers=headers_admin,
+        json={"name": "parafuso", "categoria": "ferragens", "preco": 1, "estoque": 5000},
+    )
+    resp_atualizar = cliente.put(
+        f"/produtos/{produto.id}", headers=headers_admin, json={"estoque": 5000}
+    )
+    db.refresh(produto)
+
+    assert resp_criar.status_code == 201
+    assert resp_atualizar.status_code == 200
+    assert produto.estoque == 5000
+
+
+def test_estoque_negativo_e_recusado_ao_criar_e_ao_atualizar(cliente, headers_admin, produto):
+    resp_criar = cliente.post(
+        "/produtos/",
+        headers=headers_admin,
+        json={"name": "parafuso", "categoria": "ferragens", "preco": 1, "estoque": -1},
+    )
+    resp_atualizar = cliente.put(
+        f"/produtos/{produto.id}", headers=headers_admin, json={"estoque": -1}
+    )
+
+    assert resp_criar.status_code == 400
+    assert resp_atualizar.status_code == 400

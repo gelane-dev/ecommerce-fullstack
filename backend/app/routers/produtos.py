@@ -177,8 +177,6 @@ def atualizar_produtos(
         alteracao = db.query(Produto).filter(Produto.id == id).first()
         if alteracao is None:
             raise HTTPException(status_code=404, detail="produto não encontrado")
-        if produto.estoque is not None and produto.estoque > 1000:
-            raise HTTPException(status_code=400, detail="Estoque muito alto")
         if produto.estoque is not None and produto.estoque < 0:
             raise HTTPException(status_code=400, detail="Estoque não pode ser menor que 0")
         if produto.preco is not None and produto.preco < 0:
