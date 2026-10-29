@@ -1,17 +1,17 @@
 import "./Login.css";
 import imagemLogin from "../../assets/login-arte.png";
 import { Link, useNavigate } from "react-router-dom";
-import { usarAutenticacao } from "../../hooks/usarAutenticacao";
-import { usarFormulario } from "../../hooks/usarFormulario";
-import { usarEnvio } from "../../hooks/usarEnvio";
+import { useAutenticacao } from "../../hooks/useAutenticacao";
+import { useFormulario } from "../../hooks/useFormulario";
+import { useEnvio } from "../../hooks/useEnvio";
 import { autenticacaoService } from "../../services/autenticacaoService";
 
 export const Login = () => {
     const navigate = useNavigate();
-    const { entrar } = usarAutenticacao();
+    const { entrar } = useAutenticacao();
 
-    const { valores, alterar } = usarFormulario({ email: "", senha: "" });
-    const { enviar, carregando, mensagem } = usarEnvio(
+    const { valores, alterar } = useFormulario({ email: "", senha: "" });
+    const { enviar, carregando, mensagem } = useEnvio(
         autenticacaoService.login
     );
 

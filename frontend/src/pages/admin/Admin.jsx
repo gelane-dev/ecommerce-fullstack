@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Admin.css";
-import { usarProdutos } from "../../hooks/usarProdutos";
-import { usarPedidosAdmin } from "../../hooks/usarPedidosAdmin";
+import { useProdutos } from "../../hooks/useProdutos";
+import { usePedidosAdmin } from "../../hooks/usePedidosAdmin";
 import { FormularioProduto } from "../../components/admin/FormularioProduto";
 import { TabelaProdutos } from "../../components/admin/TabelaProdutos";
 import { ListaPedidosAdmin } from "../../components/admin/ListaPedidosAdmin";
@@ -17,13 +17,13 @@ export const Admin = () => {
         salvar,
         excluir,
         enviarImagem,
-    } = usarProdutos();
+    } = useProdutos();
 
     const {
         pedidos,
         erro: erroPedidos,
         mudarStatus,
-    } = usarPedidosAdmin();
+    } = usePedidosAdmin();
 
     const salvarProduto = async (dados) => {
         const salvou = await salvar(produtoEditando?.id, dados);

@@ -1,10 +1,10 @@
 import "./MeusPedidos.css";
-import { usarMeusPedidos } from "../../hooks/usarMeusPedidos";
+import { useMeusPedidos } from "../../hooks/useMeusPedidos";
 import { CartaoPedido } from "../../components/pedidos/CartaoPedido";
 import { Mensagem } from "../../components/comuns/Mensagem";
 
 export const MeusPedidos = () => {
-    const { pedidos, erro, carregando } = usarMeusPedidos();
+    const { pedidos, erro, carregando } = useMeusPedidos();
 
     return (
         <main className="pedidos">

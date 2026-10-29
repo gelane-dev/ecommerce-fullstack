@@ -1,20 +1,20 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { usarPerfil } from '../../hooks/usarPerfil'
-import { usarFormulario } from '../../hooks/usarFormulario'
-import { usarEnvio } from '../../hooks/usarEnvio'
-import { usarAutenticacao } from '../../hooks/usarAutenticacao'
+import { usePerfil } from '../../hooks/usePerfil'
+import { useFormulario } from '../../hooks/useFormulario'
+import { useEnvio } from '../../hooks/useEnvio'
+import { useAutenticacao } from '../../hooks/useAutenticacao'
 import { usuariosService } from '../../services/usuariosService'
 import { Mensagem } from '../../components/comuns/Mensagem'
 import './Configuracoes.css'
 
 const FormularioDados = ({ perfil }) => {
-    const { atualizarUsuario } = usarAutenticacao()
-    const { valores, alterar } = usarFormulario({
+    const { atualizarUsuario } = useAutenticacao()
+    const { valores, alterar } = useFormulario({
         nome: perfil.nome,
         email: perfil.email,
     })
-    const { enviar, carregando, mensagem } = usarEnvio(
+    const { enviar, carregando, mensagem } = useEnvio(
         usuariosService.atualizarPerfil
     )
     const [sucesso, setSucesso] = useState('')
@@ -80,11 +80,11 @@ const FormularioDados = ({ perfil }) => {
 }
 
 const FormularioSenha = () => {
-    const { valores, alterar, limpar } = usarFormulario({
+    const { valores, alterar, limpar } = useFormulario({
         senha_atual: '',
         senha_nova: '',
     })
-    const { enviar, carregando, mensagem } = usarEnvio(
+    const { enviar, carregando, mensagem } = useEnvio(
         usuariosService.alterarSenha
     )
     const [sucesso, setSucesso] = useState('')
@@ -147,7 +147,7 @@ const FormularioSenha = () => {
 }
 
 export const Configuracoes = () => {
-    const { perfil, carregando, erro, carregar } = usarPerfil()
+    const { perfil, carregando, erro, carregar } = usePerfil()
 
     return (
         <main className="config">

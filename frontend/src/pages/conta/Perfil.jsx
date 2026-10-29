@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { usarPerfil } from '../../hooks/usarPerfil'
+import { usePerfil } from '../../hooks/usePerfil'
 import { Mensagem } from '../../components/comuns/Mensagem'
 import './Perfil.css'
 
 export const Perfil = () => {
-    const { perfil, carregando, erro, carregar } = usarPerfil()
+    const { perfil, carregando, erro, carregar } = usePerfil()
 
     return (
         <main className="perfil">

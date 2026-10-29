@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { pedidosService } from "../services/pedidosService";
 
-export function usarMeusPedidos() {
+export function useMeusPedidos() {
 
     const [pedidos, setPedidos] = useState([]);
     const [erro, setErro] = useState("");

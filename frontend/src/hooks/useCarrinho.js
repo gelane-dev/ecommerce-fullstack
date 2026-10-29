@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ContextoCarrinho } from "../context/CartContext";
 
-export function usarCarrinho() {
+export function useCarrinho() {
 
     const contexto = useContext(
         ContextoCarrinho
@@ -9,7 +9,7 @@ export function usarCarrinho() {
 
     if (!contexto) {
         throw new Error(
-            "usarCarrinho deve ser utilizado dentro de um ProvedorCarrinho"
+            "useCarrinho deve ser utilizado dentro de um ProvedorCarrinho"
         );
     }
 

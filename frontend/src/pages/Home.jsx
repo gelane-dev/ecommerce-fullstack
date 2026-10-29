@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { usarProdutos, usarCategorias } from '../hooks/usarProdutos'
+import { useProdutos, useCategorias } from '../hooks/useProdutos'
 import { ProdutoCard } from '../components/produtos/ProdutoCard'
 import { FiltroCategorias } from '../components/produtos/FiltroCategorias'
 import { Mensagem } from '../components/comuns/Mensagem'
@@ -14,7 +14,7 @@ export const Home = () => {
     const categoriaUrl = parametros.get('categoria') ?? ''
     const ordenarUrl = parametros.get('ordenar') ?? ''
 
-    const { categorias } = usarCategorias()
+    const { categorias } = useCategorias()
 
     // valor desconhecido conta como ausente; sem lista de categorias não há como validar
     const categoria =
@@ -23,7 +23,7 @@ export const Home = () => {
             : ''
     const ordenar = ORDENACOES_VALIDAS.includes(ordenarUrl) ? ordenarUrl : ''
 
-    const { produtos, carregando, erro, carregar } = usarProdutos({
+    const { produtos, carregando, erro, carregar } = useProdutos({
         busca,
         categoria,
         ordenar,

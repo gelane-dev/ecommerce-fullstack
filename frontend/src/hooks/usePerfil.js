@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { usuariosService } from "../services/usuariosService";
 
-export function usarPerfil() {
+export function usePerfil() {
 
     const [perfil, setPerfil] = useState(null);
     const [erro, setErro] = useState("");

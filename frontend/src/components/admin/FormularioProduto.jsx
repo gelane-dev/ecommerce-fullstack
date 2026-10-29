@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import "./FormularioProduto.css";
-import { usarFormulario } from "../../hooks/usarFormulario";
+import { useFormulario } from "../../hooks/useFormulario";
 
 const VAZIO = {
     name: "",
@@ -15,7 +15,7 @@ export const FormularioProduto = ({
     aoSalvar,
     aoCancelar,
 }) => {
-    const { valores, alterar, definir, limpar } = usarFormulario(VAZIO);
+    const { valores, alterar, definir, limpar } = useFormulario(VAZIO);
 
     useEffect(() => {
         if (produtoEditando) {

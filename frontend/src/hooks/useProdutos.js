@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { produtosService } from "../services/produtosService";
 
-export function usarCategorias() {
+export function useCategorias() {
 
     const [categorias, setCategorias] = useState([]);
 
@@ -22,7 +22,7 @@ export function usarCategorias() {
     return { categorias };
 }
 
-export function usarProduto(id) {
+export function useProduto(id) {
 
     const [produto, setProduto] = useState(null);
     const [erro, setErro] = useState("");
@@ -49,7 +49,7 @@ export function usarProduto(id) {
     return { produto, erro, carregando };
 }
 
-export function usarProdutos({ busca, categoria, ordenar } = {}) {
+export function useProdutos({ busca, categoria, ordenar } = {}) {
 
     const [produtos, setProdutos] = useState([]);
     const [erro, setErro] = useState("");

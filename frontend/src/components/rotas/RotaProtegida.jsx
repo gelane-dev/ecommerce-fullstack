@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
-import { usarAutenticacao } from "../../hooks/usarAutenticacao";
+import { useAutenticacao } from "../../hooks/useAutenticacao";
 
 export const RotaProtegida = ({ children, somenteAdmin = false }) => {
-    const { usuario, estaAutenticado, carregando } = usarAutenticacao();
+    const { usuario, estaAutenticado, carregando } = useAutenticacao();
 
     if (carregando) {
         return null;

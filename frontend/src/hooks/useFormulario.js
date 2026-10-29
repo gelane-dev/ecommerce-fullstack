@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function usarFormulario(valoresIniciais) {
+export function useFormulario(valoresIniciais) {
 
     const [valores, setValores] = useState(valoresIniciais);
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // envolve uma ação assíncrona (chamada à API) com estado de carregando e mensagem de erro
-export function usarEnvio(acao) {
+export function useEnvio(acao) {
 
     const [carregando, setCarregando] = useState(false);
     const [mensagem, setMensagem] = useState("");

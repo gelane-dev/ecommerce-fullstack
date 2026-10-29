@@ -4,15 +4,15 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { Produto } from './Produto'
-import { usarProduto, usarProdutos } from '../../hooks/usarProdutos'
-import { usarCarrinho } from '../../hooks/usarCarrinho'
+import { useProduto, useProdutos } from '../../hooks/useProdutos'
+import { useCarrinho } from '../../hooks/useCarrinho'
 
-vi.mock('../../hooks/usarProdutos', () => ({
-    usarProduto: vi.fn(),
-    usarProdutos: vi.fn(),
+vi.mock('../../hooks/useProdutos', () => ({
+    useProduto: vi.fn(),
+    useProdutos: vi.fn(),
 }))
-vi.mock('../../hooks/usarCarrinho', () => ({
-    usarCarrinho: vi.fn(),
+vi.mock('../../hooks/useCarrinho', () => ({
+    useCarrinho: vi.fn(),
 }))
 vi.mock('../../components/botoes/BotaoFavorito', () => ({
     BotaoFavorito: () => null,
@@ -42,9 +42,9 @@ const prepararHooks = ({
         adicionarAoCarrinho: vi.fn(),
         alterarQuantidade: vi.fn(),
     }
-    usarProduto.mockReturnValue({ produto, carregando, erro })
-    usarProdutos.mockReturnValue({ produtos: relacionados })
-    usarCarrinho.mockReturnValue(carrinho)
+    useProduto.mockReturnValue({ produto, carregando, erro })
+    useProdutos.mockReturnValue({ produtos: relacionados })
+    useCarrinho.mockReturnValue(carrinho)
 }
 
 const renderizar = (caminho = '/produto/1') =>
@@ -78,7 +78,7 @@ describe('Produto - conteúdo', () => {
         prepararHooks()
         renderizar()
 
-        expect(usarProduto).toHaveBeenCalledWith('1')
+        expect(useProduto).toHaveBeenCalledWith('1')
     })
 
     it('mostra placeholder quando não há imagem', () => {
@@ -374,7 +374,7 @@ describe('Produto - relacionados', () => {
         prepararHooks()
         renderizar()
 
-        expect(usarProdutos).toHaveBeenCalledWith({ categoria: 'Roupas' })
+        expect(useProdutos).toHaveBeenCalledWith({ categoria: 'Roupas' })
     })
 
     it('não exibe o produto atual entre os relacionados', () => {

@@ -1,8 +1,8 @@
 import "./Carrinho.css";
 import { Link, useNavigate } from "react-router-dom";
-import { usarCarrinho } from "../../hooks/usarCarrinho";
-import { usarAutenticacao } from "../../hooks/usarAutenticacao";
-import { usarEnvio } from "../../hooks/usarEnvio";
+import { useCarrinho } from "../../hooks/useCarrinho";
+import { useAutenticacao } from "../../hooks/useAutenticacao";
+import { useEnvio } from "../../hooks/useEnvio";
 import { pedidosService } from "../../services/pedidosService";
 import { ItemCarrinho } from "../../components/carrinho/ItemCarrinho";
 import { ResumoCarrinho } from "../../components/carrinho/ResumoCarrinho";
@@ -16,11 +16,11 @@ export const Carrinho = () => {
         removerDoCarrinho,
         alterarQuantidade,
         limparCarrinho,
-    } = usarCarrinho();
+    } = useCarrinho();
 
-    const { estaAutenticado } = usarAutenticacao();
+    const { estaAutenticado } = useAutenticacao();
 
-    const { enviar, carregando, mensagem } = usarEnvio(
+    const { enviar, carregando, mensagem } = useEnvio(
         pedidosService.criar
     );
 

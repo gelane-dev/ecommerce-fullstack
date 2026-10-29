@@ -2,8 +2,8 @@ import { useState } from "react";
 import "./Header.css";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import logoWhitePony from "../../assets/login-arte.png";
-import { usarAutenticacao } from "../../hooks/usarAutenticacao";
-import { usarCarrinho } from "../../hooks/usarCarrinho";
+import { useAutenticacao } from "../../hooks/useAutenticacao";
+import { useCarrinho } from "../../hooks/useCarrinho";
 
 const FormBusca = ({ valorInicial, aoBuscar }) => {
     const [termo, setTermo] = useState(valorInicial);
@@ -69,8 +69,8 @@ export const Header = () => {
         navigate({ pathname: "/", search: consulta ? `?${consulta}` : "" });
     };
 
-    const { usuario, estaAutenticado, sair } = usarAutenticacao();
-    const { quantidadeTotal } = usarCarrinho();
+    const { usuario, estaAutenticado, sair } = useAutenticacao();
+    const { quantidadeTotal } = useCarrinho();
 
     return (
         <header className="header">

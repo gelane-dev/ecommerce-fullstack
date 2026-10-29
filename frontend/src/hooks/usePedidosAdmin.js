@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { pedidosService } from "../services/pedidosService";
 
-export function usarPedidosAdmin() {
+export function usePedidosAdmin() {
 
     const [pedidos, setPedidos] = useState([]);
     const [erro, setErro] = useState("");

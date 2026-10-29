@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { BotaoFavorito } from '../botoes/BotaoFavorito'
-import { usarCarrinho } from '../../hooks/usarCarrinho'
+import { useCarrinho } from '../../hooks/useCarrinho'
 import { formatarPreco } from '../../utils/formatarPreco'
 import './ProdutoCard.css'
 
 export function ProdutoCard({ produto }) {
-    const { adicionarAoCarrinho } = usarCarrinho()
+    const { adicionarAoCarrinho } = useCarrinho()
 
     if (!produto) return null
 

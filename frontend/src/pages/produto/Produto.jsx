@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { usarProduto, usarProdutos } from '../../hooks/usarProdutos'
-import { usarCarrinho } from '../../hooks/usarCarrinho'
+import { useProduto, useProdutos } from '../../hooks/useProdutos'
+import { useCarrinho } from '../../hooks/useCarrinho'
 import { formatarPreco } from '../../utils/formatarPreco'
 import { Mensagem } from '../../components/comuns/Mensagem'
 import { ProdutoCard } from '../../components/produtos/ProdutoCard'
@@ -21,7 +21,7 @@ const rotuloEstoque = (estoque) => {
 }
 
 const Relacionados = ({ produto }) => {
-    const { produtos } = usarProdutos({ categoria: produto.categoria })
+    const { produtos } = useProdutos({ categoria: produto.categoria })
 
     const relacionados = produtos
         .filter((item) => item.id !== produto.id)
@@ -45,7 +45,7 @@ const Relacionados = ({ produto }) => {
 }
 
 const Detalhe = ({ produto }) => {
-    const { itens, adicionarAoCarrinho, alterarQuantidade } = usarCarrinho()
+    const { itens, adicionarAoCarrinho, alterarQuantidade } = useCarrinho()
     const [quantidade, setQuantidade] = useState(1)
     const [aviso, setAviso] = useState(null)
     const [imagemQuebrada, setImagemQuebrada] = useState(false)
@@ -217,7 +217,7 @@ const Detalhe = ({ produto }) => {
 
 export const Produto = () => {
     const { id } = useParams()
-    const { produto, carregando, erro } = usarProduto(id)
+    const { produto, carregando, erro } = useProduto(id)
 
     if (carregando) {
         return (

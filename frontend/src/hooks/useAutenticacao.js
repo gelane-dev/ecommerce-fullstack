@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ContextoAutenticacao } from "../context/AuthContext";
 
-export function usarAutenticacao() {
+export function useAutenticacao() {
 
     const contexto = useContext(
         ContextoAutenticacao
@@ -9,7 +9,7 @@ export function usarAutenticacao() {
 
     if (!contexto) {
         throw new Error(
-            "usarAutenticacao deve ser utilizado dentro de um ProvedorAutenticacao"
+            "useAutenticacao deve ser utilizado dentro de um ProvedorAutenticacao"
         );
     }
 

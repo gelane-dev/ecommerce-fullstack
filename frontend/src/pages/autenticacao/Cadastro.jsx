@@ -1,19 +1,19 @@
 import "./Login.css";
 import imagemLogin from "../../assets/login-arte.png";
 import { Link, useNavigate } from "react-router-dom";
-import { usarFormulario } from "../../hooks/usarFormulario";
-import { usarEnvio } from "../../hooks/usarEnvio";
+import { useFormulario } from "../../hooks/useFormulario";
+import { useEnvio } from "../../hooks/useEnvio";
 import { autenticacaoService } from "../../services/autenticacaoService";
 
 export const Cadastro = () => {
     const navigate = useNavigate();
 
-    const { valores, alterar } = usarFormulario({
+    const { valores, alterar } = useFormulario({
         name: "",
         email: "",
         senha: "",
     });
-    const { enviar, carregando, mensagem } = usarEnvio(
+    const { enviar, carregando, mensagem } = useEnvio(
         autenticacaoService.cadastrar
     );
 
